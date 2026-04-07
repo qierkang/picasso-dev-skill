@@ -1,0 +1,13 @@
+key: {{REQUEST_KEY}}
+title: {{REQUEST_TITLE}}
+type: {{REQUEST_TYPE}}
+status: draft
+created_at: {{CURRENT_DATE}}
+updated_at: {{CURRENT_DATE}}
+owner: {{OWNER}}
+source_assets: []
+platforms:
+  backend: true
+  pc: true
+  miniapp: false
+  mobile_app: false

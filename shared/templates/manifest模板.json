@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "case_id": "{{REQUEST_KEY}}",
+  "case_name": "{{REQUEST_TITLE}}",
+  "date": "{{CURRENT_DATE}}",
+  "request_type": "{{REQUEST_TYPE}}",
+  "owner": "{{OWNER}}",
+  "mode": "picasso-dev-skill-v1",
+  "workflow_profile": {
+    "task_slice_minutes": "30-60",
+    "execution_loop": "dev->qa->rework",
+    "evidence_first": true,
+    "default_release_decision": "NEEDS_WORK",
+    "max_dev_qa_retries": 3
+  },
+  "generation_policy": {
+    "default_bundle_only": true,
+    "default_total_files": 15,
+    "default_markdown_docs": 12,
+    "default_auxiliary_files": [
+      "manifest.json",
+      "stage-status.json",
+      "{{REQUEST_TITLE}}-冒烟测试脚本.sh"
+    ],
+    "instantiate_legacy_by_default": false
+  },
+  "entrypoints": {
+    "overview": "00-需求总览.md",
+    "requirement": "{{REQUEST_TITLE}}-需求文档.md",
+    "task_breakdown": "{{REQUEST_TITLE}}-任务分解.md",
+    "tech": "{{REQUEST_TITLE}}-技术方案.md",
+    "ui": "{{REQUEST_TITLE}}-UI交互设计规范.md",
+    "test": "{{REQUEST_TITLE}}-测试用例.md"
+  },
+  "control_docs": {
+    "traceability": [
+      "{{REQUEST_TITLE}}-实现控制总表.md"
+    ],
+    "acceptance": [
+      "{{REQUEST_TITLE}}-页面接口验收总表.md"
+    ]
+  },
+  "stage_docs": {
+    "dev_report": "{{REQUEST_TITLE}}-开发放行报告.md",
+    "review_report": "{{REQUEST_TITLE}}-代码审查报告.md",
+    "smoke_report": "{{REQUEST_TITLE}}-冒烟测试报告.md",
+    "smoke_script": "{{REQUEST_TITLE}}-冒烟测试脚本.sh",
+    "qa_report": "{{REQUEST_TITLE}}-QA与产品验收报告.md"
+  },
+  "required_public_rules": [
+    "shared/references/requirements/README.md",
+    "shared/references/requirements/异步导入导出开发规范.md",
+    "shared/references/requirements/动态规则编码生成.md",
+    "shared/references/requirements/内部编码生成.md",
+    "shared/references/requirements/枚举类创建规范.md",
+    "shared/references/requirements/Codex CLI 标准执行输入.md"
+  ],
+  "platforms": {
+    "backend": true,
+    "pc": true,
+    "miniapp": false,
+    "mobile_app": false
+  }
+}

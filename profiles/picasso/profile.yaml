@@ -1,0 +1,35 @@
+name: picasso
+title: 毕加索项目画像
+config_source: .env
+default_request_type: new-feature
+default_branch: ${PICASSO_DEFAULT_BRANCH}
+workspace_dir: ${PICASSO_WORKSPACE_DIR}
+request_key_rule: kebab-case-english
+platforms:
+  backend: true
+  pc: true
+  miniapp: true
+  mobile_app: true
+repos:
+  server: ${PICASSO_SERVER_CODE_DIR}
+  front: ${PICASSO_FRONT_CODE_DIR}
+  miniapp: ${PICASSO_MINIAPP_CODE_DIR}
+  mobile_app: ${PICASSO_MOBILE_APP_CODE_DIR}
+task_root: ${PICASSO_SERVER_TASK_DIR}
+environments:
+  local:
+    db_host: ${PICASSO_LOCAL_DB_HOST}
+    db_port: ${PICASSO_LOCAL_DB_PORT}
+    db_name: ${PICASSO_LOCAL_DB_NAME}
+  test:
+    db_host: ${PICASSO_TEST_DB_HOST}
+    db_port: ${PICASSO_TEST_DB_PORT}
+    db_name: ${PICASSO_TEST_DB_NAME}
+tools:
+  primary_cli: ${CLAUDE_BIN}
+  coding_cli: ${CODEX_BIN}
+  enhanced_mode: ${CODEX_PLUGIN_CC_ENABLED}
+skill_targets:
+  openclaw: ${OPENCLAW_SKILLS_DIR}
+  claude: ${CLAUDE_SKILLS_DIR}
+  codex: ${CODEX_SKILLS_DIR}

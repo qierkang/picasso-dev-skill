@@ -1,0 +1,12 @@
+.DS_Store
+.env
+
+workspace/requests/**
+workspace/archives/**
+workspace/cache/**
+workspace/tmp/**
+!workspace/README.md
+!workspace/.gitkeep
+
+shared/scripts/__pycache__/
+**/__pycache__/

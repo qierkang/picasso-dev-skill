@@ -1,0 +1,17 @@
+{
+  "current_stage": "draft",
+  "request_status": "draft",
+  "updated_at": "{{CURRENT_DATE}}",
+  "stages": {
+    "requirement": "todo",
+    "tech_design": "todo",
+    "ui_design": "todo",
+    "task_breakdown": "todo",
+    "development": "todo",
+    "self_test": "todo",
+    "code_review": "todo",
+    "smoke_test": "todo",
+    "qa_acceptance": "todo",
+    "release": "todo"
+  }
+}

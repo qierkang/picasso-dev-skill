@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "case_id": "maintenance-plan",
+  "case_name": "保养方案",
+  "date": "2026-04-08",
+  "request_type": "new-feature",
+  "owner": "qierkang",
+  "mode": "picasso-dev-skill-v1",
+  "workflow_profile": {
+    "task_slice_minutes": "30-60",
+    "execution_loop": "dev->qa->rework",
+    "evidence_first": true,
+    "default_release_decision": "NEEDS_WORK",
+    "max_dev_qa_retries": 3
+  },
+  "entrypoints": {
+    "overview": "00-需求总览.md",
+    "requirement": "保养方案-需求文档.md",
+    "task_breakdown": "保养方案-任务分解.md",
+    "tech": "保养方案-技术方案.md",
+    "ui": "保养方案-UI交互设计规范.md",
+    "test": "保养方案-测试用例.md",
+    "traceability": "保养方案-实现控制总表.md",
+    "acceptance": "保养方案-页面接口验收总表.md"
+  },
+  "control_docs": {
+    "traceability": [
+      "保养方案-实现控制总表.md"
+    ],
+    "acceptance": [
+      "保养方案-页面接口验收总表.md"
+    ],
+    "execution": [
+      "保养方案-开发放行报告.md",
+      "保养方案-代码审查报告.md",
+      "保养方案-冒烟测试报告.md",
+      "保养方案-QA与产品验收报告.md"
+    ]
+  },
+  "required_public_rules": [
+    "shared/templates/需求文档模板.md",
+    "shared/templates/需求文档补充规则.md",
+    "shared/templates/技术方案模板.md",
+    "shared/templates/UI交互设计模板.md",
+    "shared/references/requirements/动态规则编码生成.md",
+    "shared/references/requirements/内部编码生成.md",
+    "shared/references/requirements/枚举类创建规范.md",
+    "shared/references/requirements/异步导入导出开发规范.md",
+    "shared/references/requirements/Codex CLI 标准执行输入.md",
+    "shared/references/task/服务端任务路径布局.md",
+    "shared/references/task/服务端设计约束.md",
+    "shared/references/task/服务端 Codex 协作规范.md",
+    "shared/references/task/服务端任务门槛校验.md"
+  ],
+  "platforms": {
+    "backend": true,
+    "pc": true,
+    "miniapp": false,
+    "mobile_app": false
+  },
+  "source_assets": [
+    "/Users/qierkang/Downloads/生产+维修保养/保养方案.html",
+    "/Users/qierkang/Downloads/生产+维修保养/保养方案-详情.html"
+  ],
+  "key_dependencies": [
+    "登录上下文公司信息",
+    "组织/部门管理公司名称带出",
+    "设备类型基础数据",
+    "保养项基础数据",
+    "动态编码规则服务",
+    "方案引用校验服务"
+  ]
+}
