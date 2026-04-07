@@ -15,8 +15,8 @@
   },
   "generation_policy": {
     "default_bundle_only": true,
-    "default_total_files": 15,
-    "default_markdown_docs": 12,
+    "default_total_files": 17,
+    "default_markdown_docs": 14,
     "default_auxiliary_files": [
       "manifest.json",
       "stage-status.json",
@@ -38,14 +38,25 @@
     ],
     "acceptance": [
       "{{REQUEST_TITLE}}-页面接口验收总表.md"
+    ],
+    "execution": [
+      "{{REQUEST_TITLE}}-开发放行报告.md",
+      "{{REQUEST_TITLE}}-覆盖率报告.md",
+      "{{REQUEST_TITLE}}-前端关键流程覆盖清单.md",
+      "{{REQUEST_TITLE}}-代码审查报告.md",
+      "{{REQUEST_TITLE}}-冒烟测试报告.md",
+      "{{REQUEST_TITLE}}-QA与产品验收报告.md"
     ]
   },
   "stage_docs": {
     "dev_report": "{{REQUEST_TITLE}}-开发放行报告.md",
+    "coverage_report": "{{REQUEST_TITLE}}-覆盖率报告.md",
+    "fe_checklist": "{{REQUEST_TITLE}}-前端关键流程覆盖清单.md",
     "review_report": "{{REQUEST_TITLE}}-代码审查报告.md",
     "smoke_report": "{{REQUEST_TITLE}}-冒烟测试报告.md",
     "smoke_script": "{{REQUEST_TITLE}}-冒烟测试脚本.sh",
-    "qa_report": "{{REQUEST_TITLE}}-QA与产品验收报告.md"
+    "qa_report": "{{REQUEST_TITLE}}-QA与产品验收报告.md",
+    "acceptance_report": "{{REQUEST_TITLE}}-QA与产品验收报告.md"
   },
   "required_public_rules": [
     "shared/references/requirements/README.md",

@@ -1,14 +1,13 @@
 {
   "current_stage": "需求与方案基线完成",
-  "current_task": "等待服务端任务拆解并进入真实开发",
-  "current_cycle": 1,
-  "retry_count": 0,
+  "current_task": "等待服务端任务拆解并进入真实开发，当前尚未通过 dev gate",
+  "current_cycle": "dev-qa-loop",
+  "retry_count": 1,
   "max_retries": 3,
-  "last_failed_by": "",
+  "last_failed_by": "dev",
   "blocking_issues": [
-    "单据类型字段是否保留待确认",
-    "删除引用校验来源模块待确认",
-    "保养方案状态枚举最终口径待确认"
+    "后端覆盖率: 0.00%",
+    "后端覆盖率不足 90%，当前为 0.00%"
   ],
   "evidence_paths": [
     "00-需求总览.md",
@@ -18,8 +17,36 @@
     "保养方案-任务分解.md",
     "保养方案-测试用例.md",
     "保养方案-实现控制总表.md",
-    "保养方案-页面接口验收总表.md"
+    "保养方案-页面接口验收总表.md",
+    "保养方案-开发放行报告.md",
+    "保养方案-覆盖率报告.md",
+    "保养方案-前端关键流程覆盖清单.md",
+    "保养方案-代码审查报告.md",
+    "保养方案-冒烟测试报告.md",
+    "保养方案-QA与产品验收报告.md"
   ],
-  "next_action": "由 picasso-dev-task 生成服务端任务输入并推动后端与 PC 线程开始开发",
-  "release_decision": "NEEDS_WORK"
+  "next_action": "修复 dev 阶段阻塞项并重新执行 stage-gate.py dev",
+  "release_decision": "NEEDS_WORK",
+  "last_updated": "2026-04-08T02:30:40",
+  "checks": {
+    "dev": {
+      "passed": false,
+      "details": [
+        "后端覆盖率: 0.00%",
+        "后端覆盖率不足 90%，当前为 0.00%"
+      ],
+      "checked_at": "2026-04-08T02:30:40"
+    }
+  },
+  "history": [
+    {
+      "stage": "dev",
+      "passed": false,
+      "details": [
+        "后端覆盖率: 0.00%",
+        "后端覆盖率不足 90%，当前为 0.00%"
+      ],
+      "checked_at": "2026-04-08T02:30:40"
+    }
+  ]
 }

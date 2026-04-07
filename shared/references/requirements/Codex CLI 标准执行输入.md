@@ -30,6 +30,8 @@
 - traceability_bundle_doc:
 - acceptance_bundle_doc:
 - dev_gate_doc:
+- coverage_report_doc:
+- fe_checklist_doc:
 - qa_acceptance_doc:
 
 【必须阅读的规则文档】
@@ -55,6 +57,8 @@
 - 代码修改
 - 需求目录文档回写
 - 开发放行报告更新
+- 覆盖率报告更新
+- 前端关键流程覆盖清单更新
 - 代码审查报告更新
 - 冒烟测试报告更新
 ```

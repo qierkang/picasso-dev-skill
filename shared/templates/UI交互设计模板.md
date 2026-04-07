@@ -4,7 +4,7 @@
 
 - 版本：`v1.0`
 - 日期：`{{CURRENT_DATE}}`
-- 编写人：`picasso-dev-ui`
+- 编写人：`qierkang+codex`
 - 状态：`草稿 / 评审中 / 已确认`
 
 ## 1. 全局规范

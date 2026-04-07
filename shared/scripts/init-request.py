@@ -52,6 +52,8 @@ def main() -> int:
         templates_dir / "实现控制总表模板.md": request_dir / f"{args.title}-实现控制总表.md",
         templates_dir / "页面接口验收总表模板.md": request_dir / f"{args.title}-页面接口验收总表.md",
         templates_dir / "开发放行报告模板.md": request_dir / f"{args.title}-开发放行报告.md",
+        templates_dir / "覆盖率报告模板.md": request_dir / f"{args.title}-覆盖率报告.md",
+        templates_dir / "前端关键流程覆盖清单模板.md": request_dir / f"{args.title}-前端关键流程覆盖清单.md",
         templates_dir / "代码审查报告模板.md": request_dir / f"{args.title}-代码审查报告.md",
         templates_dir / "冒烟测试脚本模板.sh": request_dir / f"{args.title}-冒烟测试脚本.sh",
         templates_dir / "冒烟测试报告模板.md": request_dir / f"{args.title}-冒烟测试报告.md",
