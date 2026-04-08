@@ -13,3 +13,8 @@
 - 新增 `覆盖率报告模板.md` 与 `前端关键流程覆盖清单模板.md`
 - `stage-gate.py` 升级为带阶段状态回写的硬 Gate 校验脚本
 - `maintenance-plan` 示例补齐质量 Gate 相关产物
+
+## v0.2.1
+
+- 新增仓库根目录 `SKILL.md`，作为 `picasso-dev-skill` 的总入口索引
+- 兼容只识别根级 `SKILL.md` 的平台，同时保留 `skills/picasso-dev` 作为实际主流程入口
