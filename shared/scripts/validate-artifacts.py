@@ -45,6 +45,7 @@ REQUIRED_PATTERNS = {
         "*-冒烟测试脚本.sh",
         "*-冒烟测试报告.md",
         "*-QA与产品验收报告.md",
+        "*-发布记录.md",
     ],
     "change-request": [
         "*-需求文档.md",
@@ -58,6 +59,7 @@ REQUIRED_PATTERNS = {
         "*-前端关键流程覆盖清单.md",
         "*-代码审查报告.md",
         "*-冒烟测试报告.md",
+        "*-发布记录.md",
     ],
     "bugfix": [
         "*-需求文档.md",

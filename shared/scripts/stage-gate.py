@@ -8,6 +8,8 @@ import json
 import re
 import sys
 import xml.etree.ElementTree as ET
+import fcntl
+from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -20,8 +22,18 @@ REPORT_MARKERS = {
     "覆盖率报告": ["## 元信息", "执行时间", "执行人", "## 4. Gate 结论"],
     "前端关键流程覆盖清单": ["## 元信息", "执行时间", "执行人", "## 4. Gate 结论"],
     "代码审查报告": ["## 元信息", "审查时间", "审查人", "## 1. 审查结论", "## 4. 结论"],
-    "冒烟测试报告": ["## 元信息", "执行时间", "执行脚本", "## 2. 第1关：API 接口验证", "## 3. 第2关：页面集成验证", "## 4. 结论"],
+    "冒烟测试报告": [
+        "## 元信息",
+        "执行时间",
+        "执行脚本",
+        "## 2. 第1关：API 接口验证",
+        "### 2.1 第1关汇总",
+        "## 3. 第2关：页面集成验证",
+        "### 3.1 第2关汇总",
+        "## 4. 结论",
+    ],
     "QA与产品验收报告": ["## 元信息", "执行时间", "执行人", "## 4. 结论"],
+    "发布记录": ["## 元信息", "目标环境", "## 1. 发布前确认", "## 3. 发布后验证", "## 5. 结论"],
 }
 
 DOC_ALIASES = {
@@ -33,6 +45,7 @@ DOC_ALIASES = {
     "smoke_script": ["冒烟测试脚本"],
     "qa_report": ["QA与产品验收报告"],
     "acceptance_report": ["QA与产品验收报告"],
+    "release_report": ["发布记录"],
 }
 
 
@@ -96,9 +109,23 @@ def load_status(path: Path) -> dict[str, Any]:
     return default_status
 
 
+@contextmanager
+def lock_status(path: Path):
+    lock_path = path.with_suffix(f"{path.suffix}.lock")
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    with lock_path.open("w", encoding="utf-8") as lock_file:
+        fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
+
+
 def save_status(path: Path, status: dict[str, Any]) -> None:
     status["last_updated"] = datetime.now().isoformat(timespec="seconds")
-    path.write_text(json.dumps(status, ensure_ascii=False, indent=2), encoding="utf-8")
+    temp_path = path.with_suffix(f"{path.suffix}.tmp")
+    temp_path.write_text(json.dumps(status, ensure_ascii=False, indent=2), encoding="utf-8")
+    temp_path.replace(path)
 
 
 def next_action(stage: str, passed: bool) -> str:
@@ -112,7 +139,9 @@ def next_action(stage: str, passed: bool) -> str:
         return "冒烟通过，进入 QA 阶段"
     if stage == "qa":
         return "QA 通过，进入产品验收阶段"
-    return "验收通过，可准备发布、归档并关闭需求"
+    if stage == "acceptance":
+        return "产品验收通过，可准备发布"
+    return "发布通过，可归档并关闭需求"
 
 
 def record(status: dict[str, Any], stage: str, passed: bool, details: list[str]) -> None:
@@ -136,7 +165,7 @@ def record(status: dict[str, Any], stage: str, passed: bool, details: list[str])
         status["blocking_issues"] = []
         status["current_cycle"] = "handoff"
         status["next_action"] = next_action(stage, passed=True)
-        if stage == "acceptance":
+        if stage == "release":
             status["release_decision"] = "READY"
     else:
         status["retry_count"] = int(status.get("retry_count", 0)) + 1
@@ -259,6 +288,12 @@ def check_smoke(status: dict[str, Any], requirements_dir: Path, manifest: dict[s
         content = smoke_report.read_text(encoding="utf-8")
         if "100%通过" not in content and "100% 通过" not in content and "未执行" in content:
             issues.append("冒烟测试报告尚未形成真实通过结论")
+    if smoke_script is not None:
+        script_content = smoke_script.read_text(encoding="utf-8")
+        if "TODO" in script_content:
+            issues.append("冒烟测试脚本仍包含 TODO，占位脚本未替换为真实检查项")
+        if "第1关" not in script_content or "第2关" not in script_content:
+            issues.append("冒烟测试脚本未按两关制结构组织")
     return (not issues, issues or ["冒烟测试阶段卡点通过"])
 
 
@@ -290,9 +325,25 @@ def check_acceptance(status: dict[str, Any], requirements_dir: Path, manifest: d
     return (not issues, issues or ["产品验收阶段卡点通过"])
 
 
+def check_release(status: dict[str, Any], requirements_dir: Path, manifest: dict[str, Any]) -> tuple[bool, list[str]]:
+    issues: list[str] = []
+    acceptance_check = status.get("checks", {}).get("acceptance")
+    release_report = resolve_doc(requirements_dir, manifest, "release_report")
+    if not acceptance_check or not acceptance_check.get("passed"):
+        issues.append("产品验收阶段卡点未通过，禁止进入发布")
+    if release_report is None:
+        issues.append("缺少发布记录")
+    issues.extend(validate_markers(release_report, "发布记录"))
+    if release_report is not None:
+        content = release_report.read_text(encoding="utf-8")
+        if "是否发布成功：`否`" in content or "默认结论：`未完成发布验证前保持 NEEDS_WORK`" in content:
+            issues.append("发布记录仍为未完成或未通过状态")
+    return (not issues, issues or ["发布阶段卡点通过"])
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Picasso 阶段放行校验")
-    parser.add_argument("stage", choices=["dev", "review", "smoke", "qa", "acceptance"], help="要校验的阶段")
+    parser.add_argument("stage", choices=["dev", "review", "smoke", "qa", "acceptance", "release"], help="要校验的阶段")
     parser.add_argument("requirements_dir", help="需求目录路径")
     parser.add_argument("--backend-project", help="后端项目路径", default=None)
     args = parser.parse_args()
@@ -303,23 +354,27 @@ def main() -> int:
         return 2
 
     status_path = requirements_dir / STAGE_STATUS_FILE
-    status = load_status(status_path)
     backend_project = Path(args.backend_project).expanduser().resolve() if args.backend_project else None
     manifest = load_manifest(requirements_dir)
 
-    if args.stage == "dev":
-        passed, details = check_dev(requirements_dir, backend_project, manifest)
-    elif args.stage == "review":
-        passed, details = check_review(status, requirements_dir, manifest)
-    elif args.stage == "smoke":
-        passed, details = check_smoke(status, requirements_dir, manifest)
-    elif args.stage == "qa":
-        passed, details = check_qa(status, requirements_dir, manifest)
-    else:
-        passed, details = check_acceptance(status, requirements_dir, manifest)
+    with lock_status(status_path):
+        status = load_status(status_path)
 
-    record(status, args.stage, passed, details)
-    save_status(status_path, status)
+        if args.stage == "dev":
+            passed, details = check_dev(requirements_dir, backend_project, manifest)
+        elif args.stage == "review":
+            passed, details = check_review(status, requirements_dir, manifest)
+        elif args.stage == "smoke":
+            passed, details = check_smoke(status, requirements_dir, manifest)
+        elif args.stage == "qa":
+            passed, details = check_qa(status, requirements_dir, manifest)
+        elif args.stage == "acceptance":
+            passed, details = check_acceptance(status, requirements_dir, manifest)
+        else:
+            passed, details = check_release(status, requirements_dir, manifest)
+
+        record(status, args.stage, passed, details)
+        save_status(status_path, status)
 
     print(
         json.dumps(

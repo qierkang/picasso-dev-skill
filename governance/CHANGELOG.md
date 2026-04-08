@@ -18,3 +18,10 @@
 
 - 新增仓库根目录 `SKILL.md`，作为 `picasso-dev-skill` 的总入口索引
 - 兼容只识别根级 `SKILL.md` 的平台，同时保留 `skills/picasso-dev` 作为实际主流程入口
+
+## v0.3.0
+
+- 补齐旧 `picasso-task` 的任务生命周期规则：状态管理、归档恢复、变更流程、快捷触发
+- 发布流程升级为六步法，并新增 `发布记录模板.md`
+- 两关制冒烟脚本模板升级，补强第 2 关的文件、路由、Controller 校验项
+- `sync.sh` 现在会同步根级 `picasso-dev-skill` 包和独立子 skill

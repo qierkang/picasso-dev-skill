@@ -13,6 +13,17 @@
     "default_release_decision": "NEEDS_WORK",
     "max_dev_qa_retries": 3
   },
+  "generation_policy": {
+    "default_bundle_only": true,
+    "default_total_files": 18,
+    "default_markdown_docs": 15,
+    "default_auxiliary_files": [
+      "manifest.json",
+      "stage-status.json",
+      "保养方案-冒烟测试脚本.sh"
+    ],
+    "instantiate_legacy_by_default": false
+  },
   "entrypoints": {
     "overview": "00-需求总览.md",
     "requirement": "保养方案-需求文档.md",
@@ -34,7 +45,8 @@
       "保养方案-前端关键流程覆盖清单.md",
       "保养方案-代码审查报告.md",
       "保养方案-冒烟测试报告.md",
-      "保养方案-QA与产品验收报告.md"
+      "保养方案-QA与产品验收报告.md",
+      "保养方案-发布记录.md"
     ]
   },
   "stage_docs": {
@@ -45,7 +57,8 @@
     "smoke_report": "保养方案-冒烟测试报告.md",
     "smoke_script": "保养方案-冒烟测试脚本.sh",
     "qa_report": "保养方案-QA与产品验收报告.md",
-    "acceptance_report": "保养方案-QA与产品验收报告.md"
+    "acceptance_report": "保养方案-QA与产品验收报告.md",
+    "release_report": "保养方案-发布记录.md"
   },
   "required_public_rules": [
     "shared/templates/需求文档模板.md",
@@ -59,6 +72,8 @@
     "shared/references/requirements/Codex CLI 标准执行输入.md",
     "shared/references/task/服务端任务路径布局.md",
     "shared/references/task/服务端设计约束.md",
+    "shared/references/task/服务端任务状态管理.md",
+    "shared/references/task/服务端需求变更流程.md",
     "shared/references/task/服务端 Codex 协作规范.md",
     "shared/references/task/服务端任务门槛校验.md"
   ],

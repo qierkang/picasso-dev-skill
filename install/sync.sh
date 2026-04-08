@@ -23,6 +23,26 @@ sync_target() {
 
   mkdir -p "$target_dir"
 
+  local package_dir="$target_dir/picasso-dev-skill"
+  rm -rf "$package_dir"
+  mkdir -p "$package_dir"
+
+  cp "$ROOT_DIR/SKILL.md" "$package_dir/SKILL.md"
+  cp "$ROOT_DIR/README.md" "$package_dir/README.md"
+  cp "$ROOT_DIR/.env.example" "$package_dir/.env.example"
+  cp -R "$ROOT_DIR/install" "$package_dir/install"
+  cp -R "$ROOT_DIR/skills" "$package_dir/skills"
+  cp -R "$ROOT_DIR/profiles" "$package_dir/profiles"
+  cp -R "$ROOT_DIR/shared" "$package_dir/shared"
+
+  mkdir -p "$package_dir/workspace"
+  cp "$ROOT_DIR/workspace/README.md" "$package_dir/workspace/README.md"
+
+  mkdir -p "$package_dir/governance"
+  cp "$ROOT_DIR/governance/CHANGELOG.md" "$package_dir/governance/CHANGELOG.md"
+
+  echo "[PASS] 已同步 picasso-dev-skill 根包 -> $package_dir"
+
   for skill_dir in "$ROOT_DIR"/skills/*; do
     [ -d "$skill_dir" ] || continue
     skill_name="$(basename "$skill_dir")"

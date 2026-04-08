@@ -108,6 +108,7 @@ workspace/requests/<request-key>/
 ├── <功能名称>-冒烟测试脚本.sh
 ├── <功能名称>-冒烟测试报告.md
 ├── <功能名称>-QA与产品验收报告.md
+├── <功能名称>-发布记录.md
 ├── logs/
 └── stage-status.json
 ```
@@ -185,6 +186,10 @@ workspace/requests/<request-key>/
    - 必须有 `*-QA与产品验收报告.md`
    - 默认结论不是 `READY`，而是 `NEEDS_WORK`
    - 只有关键链路、关键字段、关键状态、关键异常路径都闭环后，才能进入 READY
+7. `发布卡点`
+   - 必须有 `*-发布记录.md`
+   - 必须明确目标环境、发布策略、回滚方式和发布后验证结果
+   - 产品验收未通过前，禁止进入发布
 
 ## 默认放行立场
 
@@ -240,4 +245,5 @@ python3 shared/scripts/stage-gate.py review workspace/requests/<request-key>
 python3 shared/scripts/stage-gate.py smoke workspace/requests/<request-key>
 python3 shared/scripts/stage-gate.py qa workspace/requests/<request-key>
 python3 shared/scripts/stage-gate.py acceptance workspace/requests/<request-key>
+python3 shared/scripts/stage-gate.py release workspace/requests/<request-key>
 ```

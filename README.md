@@ -103,6 +103,7 @@ picasso-dev-skill/
 - `冒烟测试脚本模板.sh`
 - `冒烟测试报告模板.md`
 - `QA与产品验收报告模板.md`
+- `发布记录模板.md`
 
 ### 公共规则入口
 
@@ -120,6 +121,10 @@ picasso-dev-skill/
 - `服务端任务路径布局.md`
 - `服务端任务门槛校验.md`
 - `服务端设计约束.md`
+- `服务端任务状态管理.md`
+- `服务端任务归档恢复与撤销.md`
+- `服务端需求变更流程.md`
+- `服务端快捷触发语义.md`
 - `服务端 Codex 协作规范.md`
 - `子产品与模块映射.md`
 
@@ -202,7 +207,8 @@ bash install/sync.sh
 
 ### `sync.sh`
 
-- 把 `skills/` 里的 `picasso-dev*` 同步到配置好的目标技能目录
+- 同步整套 `picasso-dev-skill` 根包，兼容只识别根级 `SKILL.md` 的平台
+- 同时保留 `skills/` 下各子 skill 的独立同步
 - 当前支持：
   - `OPENCLAW_SKILLS_DIR`
   - `CLAUDE_SKILLS_DIR`
