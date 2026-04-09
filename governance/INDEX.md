@@ -11,4 +11,6 @@
 
 - `updates/chg-0001-initial-structure.md`
 - `updates/chg-0006-add-local-only-preflight-and-autopilot.md`
+- `updates/chg-0007-add-executable-runtime-orchestration.md`
 - `decisions/dec-0001-local-only-preflight-and-autopilot.md`
+- `decisions/dec-0002-executable-runtime-orchestration.md`

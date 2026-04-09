@@ -36,6 +36,32 @@ environments:
     db_port: ${PICASSO_LOCAL_DB_PORT}
     db_name: ${PICASSO_LOCAL_DB_NAME}
     require_psql: ${PICASSO_REQUIRE_LOCAL_DB_CLI}
+runtime_orchestration:
+  auto_start_local_services: ${PICASSO_AUTO_START_LOCAL_SERVICES}
+  auto_stop_local_services: ${PICASSO_AUTO_STOP_LOCAL_SERVICES}
+  auto_fetch_access_token: ${PICASSO_AUTO_FETCH_ACCESS_TOKEN}
+  ready_timeout_sec: ${PICASSO_RUNTIME_READY_TIMEOUT_SEC}
+  runtime_dir: ${PICASSO_RUNTIME_DIR}
+  backend:
+    workdir: ${PICASSO_BACKEND_START_WORKDIR}
+    command: ${PICASSO_BACKEND_START_CMD}
+    base_url: ${PICASSO_BACKEND_BASE_URL}
+    health_url: ${PICASSO_BACKEND_HEALTH_URL}
+    expect_text: ${PICASSO_BACKEND_EXPECT_TEXT}
+  frontend:
+    workdir: ${PICASSO_FRONTEND_START_WORKDIR}
+    command: ${PICASSO_FRONTEND_START_CMD}
+    ready_url: ${PICASSO_FRONTEND_READY_URL}
+    expect_text: ${PICASSO_FRONTEND_EXPECT_TEXT}
+  auth:
+    api_prefix: ${PICASSO_API_PREFIX}
+    login_url: ${PICASSO_LOGIN_URL}
+    login_method: ${PICASSO_LOGIN_METHOD}
+    username: ${PICASSO_LOGIN_USERNAME}
+    tenant_id: ${PICASSO_LOGIN_TENANT_ID}
+    tenant_header: ${PICASSO_LOGIN_TENANT_HEADER}
+    request_body_template: ${PICASSO_LOGIN_REQUEST_BODY_TEMPLATE}
+    token_path: ${PICASSO_LOGIN_TOKEN_PATH}
 tools:
   primary_cli: ${CLAUDE_BIN}
   coding_cli: ${CODEX_BIN}

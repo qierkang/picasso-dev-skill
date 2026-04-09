@@ -220,6 +220,34 @@ check_required_cmd() {
   fi
 }
 
+check_required_value() {
+  local label="$1"
+  local value="$2"
+  if is_placeholder "$value"; then
+    fail "$label 仍是占位值，请先修改 .env"
+  elif [ -n "$value" ]; then
+    pass "$label 已配置"
+  else
+    fail "$label 未配置"
+  fi
+}
+
+check_optional_path_value() {
+  local label="$1"
+  local value="$2"
+  local resolved
+  if is_placeholder "$value"; then
+    fail "$label 仍是占位值，请先修改 .env"
+    return
+  fi
+  resolved="$(resolve_path "$value")"
+  if [ -d "$resolved" ]; then
+    pass "$label 存在"
+  else
+    fail "$label 不存在: $resolved"
+  fi
+}
+
 check_version_at_least() {
   local label="$1"
   local current_version="$2"
@@ -412,6 +440,49 @@ check_runtime_profiles() {
   fi
 }
 
+check_runtime_orchestration() {
+  if [ "${PICASSO_AUTO_START_LOCAL_SERVICES:-true}" = "true" ]; then
+    pass "已开启自动拉起本地服务"
+    check_optional_path_value "后端启动目录" "${PICASSO_BACKEND_START_WORKDIR:-}"
+    check_required_value "后端启动命令" "${PICASSO_BACKEND_START_CMD:-}"
+    check_required_value "后端基础地址" "${PICASSO_BACKEND_BASE_URL:-}"
+    check_required_value "后端健康检查地址" "${PICASSO_BACKEND_HEALTH_URL:-}"
+
+    check_optional_path_value "前端启动目录" "${PICASSO_FRONTEND_START_WORKDIR:-}"
+    check_required_value "前端启动命令" "${PICASSO_FRONTEND_START_CMD:-}"
+    check_required_value "前端就绪地址" "${PICASSO_FRONTEND_READY_URL:-}"
+  else
+    warn "已关闭自动拉起本地服务；无法保证启动、联调、冒烟全自动闭环"
+  fi
+
+  if [ -n "${PICASSO_RUNTIME_READY_TIMEOUT_SEC:-}" ]; then
+    if [[ "${PICASSO_RUNTIME_READY_TIMEOUT_SEC:-}" =~ ^[0-9]+$ ]]; then
+      pass "运行时等待超时秒数格式正确"
+    else
+      fail "PICASSO_RUNTIME_READY_TIMEOUT_SEC 必须是整数秒"
+    fi
+  else
+    warn "未配置 PICASSO_RUNTIME_READY_TIMEOUT_SEC，将使用默认值"
+  fi
+
+  if [ "${PICASSO_AUTO_FETCH_ACCESS_TOKEN:-false}" = "true" ]; then
+    pass "已开启自动获取 Token"
+    check_required_value "登录接口地址" "${PICASSO_LOGIN_URL:-}"
+    check_required_value "登录用户名" "${PICASSO_LOGIN_USERNAME:-}"
+    check_required_value "登录密码" "${PICASSO_LOGIN_PASSWORD:-}"
+    check_required_value "登录请求体模板" "${PICASSO_LOGIN_REQUEST_BODY_TEMPLATE:-}"
+    check_required_value "登录 token 路径" "${PICASSO_LOGIN_TOKEN_PATH:-}"
+  else
+    warn "已关闭自动获取 Token；需要鉴权的冒烟脚本必须手动传入 TOKEN"
+  fi
+
+  if [ "${PICASSO_AUTO_STOP_LOCAL_SERVICES:-true}" = "true" ]; then
+    pass "已开启自动收尾"
+  else
+    warn "已关闭自动收尾；脚本结束后需要人工停止本地服务"
+  fi
+}
+
 if [ ! -f "$ROOT_DIR/.env" ]; then
   fail ".env 不存在，请先执行 bash install/setup.sh"
   info "doctor 检查完成: FAIL=$FAIL_COUNT WARN=$WARN_COUNT"
@@ -498,6 +569,7 @@ if [ "$CAPABILITY" != "docs" ]; then
     if [ -n "${PICASSO_REMOTE_SSH_ALIAS:-}" ] || [ -n "${PICASSO_REMOTE_DEPLOY_PATH:-}" ]; then
       fail "local-only 模式下不应配置远程部署入口"
     fi
+    check_runtime_orchestration
   fi
 fi
 

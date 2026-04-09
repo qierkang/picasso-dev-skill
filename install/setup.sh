@@ -19,6 +19,7 @@ mkdir -p \
   "$ROOT_DIR/workspace/server-tasks/archived" \
   "$ROOT_DIR/workspace/cache" \
   "$ROOT_DIR/workspace/tmp" \
+  "$ROOT_DIR/workspace/tmp/runtime" \
   "$ROOT_DIR/governance/updates" \
   "$ROOT_DIR/governance/decisions" \
   "$ROOT_DIR/examples/maintenance-plan/assets" \
@@ -33,6 +34,7 @@ for keep_dir in \
   "$ROOT_DIR/workspace/server-tasks/archived" \
   "$ROOT_DIR/workspace/cache" \
   "$ROOT_DIR/workspace/tmp" \
+  "$ROOT_DIR/workspace/tmp/runtime" \
   "$ROOT_DIR/governance/decisions"; do
   if [ ! -f "$keep_dir/.gitkeep" ]; then
     touch "$keep_dir/.gitkeep"

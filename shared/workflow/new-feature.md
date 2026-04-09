@@ -34,6 +34,8 @@
 - 涉及本地 SQL / 数据回看，必须先通过 `bash install/doctor.sh --capability db`
 - 涉及本地启动、冒烟、发布准备，必须先通过 `bash install/doctor.sh --capability deploy`
 - `doctor` 失败时，先补环境，不继续写代码
+- `deploy doctor` 除了工具链，还必须校验运行编排入口：后端启动命令、前端启动命令、就绪地址、自动登录配置
+- `doctor` 通过后，默认直接继续执行本地启动、联调、冒烟、收尾，不反复询问是否继续
 
 ## 强制 Gate 顺序
 
@@ -68,6 +70,7 @@ UI 验收卡点
 - 每个阶段默认结论都是 `NEEDS_WORK`
 - 没有证据的“通过”默认无效
 - 同一任务连续失败 `3` 次，必须升级给 PM / 架构重拆
+- 冒烟阶段默认由 `stage-gate.py smoke` 真实执行脚本，自动启动前后端并回收本地进程
 
 ## 最低产物
 

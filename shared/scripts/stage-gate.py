@@ -5,7 +5,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
+import subprocess
 import sys
 import xml.etree.ElementTree as ET
 import fcntl
@@ -279,8 +281,47 @@ def check_review(status: dict[str, Any], requirements_dir: Path, manifest: dict[
     return (not issues, issues or ["代码审查阶段卡点通过"])
 
 
-def check_smoke(status: dict[str, Any], requirements_dir: Path, manifest: dict[str, Any]) -> tuple[bool, list[str]]:
+def run_smoke_script(requirements_dir: Path, smoke_script: Path, timeout_sec: int) -> tuple[bool, list[str]]:
+    logs_dir = requirements_dir / "logs"
+    logs_dir.mkdir(parents=True, exist_ok=True)
+    log_path = logs_dir / "stage-gate-smoke.log"
+    env = os.environ.copy()
+    env.setdefault("PICASSO_RUNTIME_SESSION_NAME", requirements_dir.name)
+
+    try:
+        result = subprocess.run(
+            ["bash", str(smoke_script)],
+            cwd=requirements_dir,
+            env=env,
+            capture_output=True,
+            text=False,
+            timeout=timeout_sec,
+            check=False,
+        )
+    except subprocess.TimeoutExpired:
+        log_path.write_text(f"[TIMEOUT] 冒烟脚本执行超过 {timeout_sec} 秒\n", encoding="utf-8")
+        return False, [f"冒烟测试脚本执行超时（>{timeout_sec}s）", f"执行日志: {log_path}"]
+
+    stdout = (result.stdout or b"").decode("utf-8", errors="replace")
+    stderr = (result.stderr or b"").decode("utf-8", errors="replace")
+    output = stdout + ("\n" if stdout and stderr else "") + stderr
+    log_path.write_text(output or "[EMPTY] stage-gate smoke produced no output\n", encoding="utf-8")
+    details = [f"执行日志: {log_path}", f"脚本退出码: {result.returncode}"]
+    if result.returncode != 0:
+        return False, details
+    details.append("冒烟测试脚本执行成功")
+    return True, details
+
+
+def check_smoke(
+    status: dict[str, Any],
+    requirements_dir: Path,
+    manifest: dict[str, Any],
+    execute_smoke: bool,
+    smoke_timeout: int,
+) -> tuple[bool, list[str]]:
     issues: list[str] = []
+    execution_details: list[str] = []
     review_check = status.get("checks", {}).get("review")
     smoke_report = resolve_doc(requirements_dir, manifest, "smoke_report")
     smoke_script = resolve_doc(requirements_dir, manifest, "smoke_script", extension="sh")
@@ -291,17 +332,21 @@ def check_smoke(status: dict[str, Any], requirements_dir: Path, manifest: dict[s
     if smoke_script is None:
         issues.append("缺少冒烟测试脚本")
     issues.extend(validate_markers(smoke_report, "冒烟测试报告"))
-    if smoke_report is not None:
-        content = smoke_report.read_text(encoding="utf-8")
-        if "100%通过" not in content and "100% 通过" not in content and "未执行" in content:
-            issues.append("冒烟测试报告尚未形成真实通过结论")
     if smoke_script is not None:
         script_content = smoke_script.read_text(encoding="utf-8")
         if "TODO" in script_content:
             issues.append("冒烟测试脚本仍包含 TODO，占位脚本未替换为真实检查项")
         if "第1关" not in script_content or "第2关" not in script_content:
             issues.append("冒烟测试脚本未按两关制结构组织")
-    return (not issues, issues or ["冒烟测试阶段卡点通过"])
+        if execute_smoke:
+            executed, execution_details = run_smoke_script(requirements_dir, smoke_script, smoke_timeout)
+            if not executed:
+                issues.append("冒烟测试脚本执行失败")
+    if smoke_report is not None:
+        content = smoke_report.read_text(encoding="utf-8")
+        if not execute_smoke and "100%通过" not in content and "100% 通过" not in content and "未执行" in content:
+            issues.append("冒烟测试报告尚未形成真实通过结论")
+    return (not issues, execution_details + (issues or ["冒烟测试阶段卡点通过"]))
 
 
 def check_qa(status: dict[str, Any], requirements_dir: Path, manifest: dict[str, Any]) -> tuple[bool, list[str]]:
@@ -391,6 +436,8 @@ def main() -> int:
     )
     parser.add_argument("requirements_dir", help="需求目录路径")
     parser.add_argument("--backend-project", help="后端项目路径", default=None)
+    parser.add_argument("--skip-smoke-exec", action="store_true", help="仅校验文档和脚本，不真实执行冒烟脚本")
+    parser.add_argument("--smoke-timeout", type=int, default=600, help="冒烟脚本执行超时秒数，默认 600")
     args = parser.parse_args()
 
     requirements_dir = Path(args.requirements_dir).expanduser().resolve()
@@ -410,7 +457,13 @@ def main() -> int:
         elif args.stage == "review":
             passed, details = check_review(status, requirements_dir, manifest)
         elif args.stage == "smoke":
-            passed, details = check_smoke(status, requirements_dir, manifest)
+            passed, details = check_smoke(
+                status,
+                requirements_dir,
+                manifest,
+                execute_smoke=not args.skip_smoke_exec,
+                smoke_timeout=args.smoke_timeout,
+            )
         elif args.stage == "qa":
             passed, details = check_qa(status, requirements_dir, manifest)
         elif args.stage == "ui_acceptance":

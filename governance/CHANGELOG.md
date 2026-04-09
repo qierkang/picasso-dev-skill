@@ -39,3 +39,11 @@
 - `doctor.sh` 现在会校验 `local-only` 边界、Java 21、前端仓库声明的 `node / pnpm` 最低版本，以及本地 `psql`
 - 主 skill、workflow、manifest、Codex CLI 标准执行输入统一要求：先通过 `doctor.sh`，再进入真实开发
 - 当前 skill 的默认执行风格收紧为“环境通过后自主推进 routine 动作，只在真实阻塞时升级给使用者”
+
+## v0.3.3
+
+- 新增 `shared/scripts/runtime-lib.sh`，把本地启动、等待 ready、自动登录、自动收尾统一收口到脚本库
+- `stage-gate.py smoke` 现在默认真实执行冒烟脚本，并把输出落到 `logs/stage-gate-smoke.log`
+- `deploy doctor` 现在会校验运行编排入口：后端 / 前端启动命令、ready 地址、自动登录配置
+- 冒烟脚本模板与 `maintenance-plan` 示例已切换到可执行运行编排口径
+- 已用 mock 前后端完成一次真实模拟，验证“自动启动 → 自动联调 → 自动冒烟 → 自动收尾”闭环可跑通

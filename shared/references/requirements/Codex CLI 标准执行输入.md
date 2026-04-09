@@ -46,6 +46,23 @@
 - allowed_runtime_profiles: local,dev
 - forbidden_runtime_profiles: test,uat,prod
 
+【运行编排】
+- auto_start_local_services: true / false
+- auto_stop_local_services: true / false
+- auto_fetch_access_token: true / false
+- runtime_ready_timeout_sec:
+- backend_start_workdir:
+- backend_start_command:
+- backend_base_url:
+- backend_health_url:
+- frontend_start_workdir:
+- frontend_start_command:
+- frontend_ready_url:
+- frontend_expect_text:
+- login_url:
+- login_request_body_template:
+- login_token_path:
+
 【必须阅读的规则文档】
 - shared/references/requirements/README.md
 - shared/references/requirements/异步导入导出开发规范.md
@@ -67,6 +84,8 @@
 - 修改前先理解当前系统框架
 - 修改完成后必须执行验证命令
 - 环境通过后默认自主推进 routine 动作，不反复询问是否继续
+- 如 capability_mode = deploy，则默认自动启动前后端、自动联调、自动冒烟、自动收尾
+- `stage-gate.py smoke` 默认真实执行冒烟脚本；只有显式说明时才允许 `--skip-smoke-exec`
 
 【输出物要求】
 - 代码修改
@@ -85,7 +104,8 @@
 3. `Codex CLI 标准执行输入.md`
 4. 公共规则文档
 5. 根据 `capability_mode` 先执行对应 `doctor.sh`
-6. `需求文档`
-7. `技术方案`
-8. `UI交互设计规范`
-9. `测试用例`
+6. 如 capability_mode = deploy，再确认运行编排变量已齐全
+7. `需求文档`
+8. `技术方案`
+9. `UI交互设计规范`
+10. `测试用例`

@@ -31,6 +31,34 @@
       "deploy": "bash install/doctor.sh --capability deploy"
     }
   },
+  "runtime_orchestration": {
+    "auto_start_local_services": true,
+    "auto_stop_local_services": true,
+    "auto_fetch_access_token": true,
+    "ready_timeout_sec": 180,
+    "backend": {
+      "workdir": "${PICASSO_BACKEND_START_WORKDIR}",
+      "start_command": "${PICASSO_BACKEND_START_CMD}",
+      "base_url": "${PICASSO_BACKEND_BASE_URL}",
+      "health_url": "${PICASSO_BACKEND_HEALTH_URL}",
+      "expect_text": "${PICASSO_BACKEND_EXPECT_TEXT}"
+    },
+    "frontend": {
+      "workdir": "${PICASSO_FRONTEND_START_WORKDIR}",
+      "start_command": "${PICASSO_FRONTEND_START_CMD}",
+      "ready_url": "${PICASSO_FRONTEND_READY_URL}",
+      "expect_text": "${PICASSO_FRONTEND_EXPECT_TEXT}"
+    },
+    "auth": {
+      "api_prefix": "${PICASSO_API_PREFIX}",
+      "login_url": "${PICASSO_LOGIN_URL}",
+      "login_method": "${PICASSO_LOGIN_METHOD}",
+      "tenant_id": "${PICASSO_LOGIN_TENANT_ID}",
+      "tenant_header": "${PICASSO_LOGIN_TENANT_HEADER}",
+      "request_body_template": "${PICASSO_LOGIN_REQUEST_BODY_TEMPLATE}",
+      "token_path": "${PICASSO_LOGIN_TOKEN_PATH}"
+    }
+  },
   "generation_policy": {
     "default_bundle_only": true,
     "default_total_files": 20,

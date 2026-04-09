@@ -12,3 +12,6 @@
    - 微信小程序
    - 移动端 App
 8. `workspace/` 为运行区，默认不提交；`governance/` 为维护区，需要提交。
+9. 进入真实开发前，先按能力执行 `doctor.sh`；`docs / dev / db / deploy` 以实际任务为准。
+10. 当前 skill 固定 `local-only`：只允许 `local / dev`，禁止连接、查询、部署 `test / uat / prod`。
+11. `.env` 如已配置运行编排入口，默认自动执行：启动后端 → 启动前端 → 自动联调 → 自动冒烟 → 自动收尾。

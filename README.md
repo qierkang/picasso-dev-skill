@@ -235,6 +235,7 @@ bash install/sync.sh
 - 自动识别 `application-local.yaml / application-dev.yaml / application-test.yaml / application-uat.yaml / application-prod.yaml`
 - 明确把 `test / uat / prod` 识别为受限环境
 - 当前能力没通过时，默认先修环境，再继续真实开发
+- `deploy` 能力会额外校验自动联调入口：后端 / 前端启动命令、就绪地址、自动登录配置
 
 常用命令：
 
@@ -244,6 +245,37 @@ bash install/doctor.sh --capability dev
 bash install/doctor.sh --capability db
 bash install/doctor.sh --capability deploy
 ```
+
+## 自动联调与自动冒烟
+
+当前 skill 的目标不是“把流程写出来”，而是把本地闭环真正跑起来。
+
+只要 `.env` 已补齐以下入口，进入 `deploy` 能力后就默认按自动链路执行：
+
+- `PICASSO_BACKEND_START_WORKDIR`
+- `PICASSO_BACKEND_START_CMD`
+- `PICASSO_BACKEND_BASE_URL`
+- `PICASSO_BACKEND_HEALTH_URL`
+- `PICASSO_FRONTEND_START_WORKDIR`
+- `PICASSO_FRONTEND_START_CMD`
+- `PICASSO_FRONTEND_READY_URL`
+- `PICASSO_AUTO_START_LOCAL_SERVICES`
+- `PICASSO_AUTO_STOP_LOCAL_SERVICES`
+- `PICASSO_AUTO_FETCH_ACCESS_TOKEN`
+- `PICASSO_LOGIN_URL`
+- `PICASSO_LOGIN_REQUEST_BODY_TEMPLATE`
+- `PICASSO_LOGIN_TOKEN_PATH`
+
+默认行为：
+
+- `doctor deploy` 先检查运行编排变量是否完整
+- 冒烟脚本自动 source `shared/scripts/runtime-lib.sh`
+- 自动启动后端、等待健康检查
+- 自动启动前端、等待页面 ready
+- 按需自动登录拿 token
+- 自动执行两关制冒烟
+- 脚本结束后自动停止本次拉起的本地服务
+- `python3 shared/scripts/stage-gate.py smoke ...` 默认真实执行脚本，不再只读报告文本
 
 ### `sync.sh`
 
