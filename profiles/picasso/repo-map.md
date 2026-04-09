@@ -25,4 +25,5 @@
 1. Picasso 项目默认以这四个源码仓库为开发边界。
 2. 业务需求的运行产物一律写入 `workspace/requests/<request-key>/`。
 3. 不把业务需求产物写回 skill 包规则目录。
-4. 新机器接手时，优先修改 `.env`，再执行 `bash install/doctor.sh` 校验。
+4. 新机器接手时，优先修改 `.env`，再执行 `bash install/doctor.sh --capability dev` 校验。
+5. 当前 skill 只允许 `local / dev` 作为可操作环境，`test / uat / prod` 只用于识别边界。

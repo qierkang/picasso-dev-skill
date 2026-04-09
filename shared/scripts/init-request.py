@@ -57,7 +57,9 @@ def main() -> int:
         templates_dir / "代码审查报告模板.md": request_dir / f"{args.title}-代码审查报告.md",
         templates_dir / "冒烟测试脚本模板.sh": request_dir / f"{args.title}-冒烟测试脚本.sh",
         templates_dir / "冒烟测试报告模板.md": request_dir / f"{args.title}-冒烟测试报告.md",
-        templates_dir / "QA与产品验收报告模板.md": request_dir / f"{args.title}-QA与产品验收报告.md",
+        templates_dir / "QA验收报告模板.md": request_dir / f"{args.title}-QA验收报告.md",
+        templates_dir / "UI验收报告模板.md": request_dir / f"{args.title}-UI验收报告.md",
+        templates_dir / "产品验收报告模板.md": request_dir / f"{args.title}-产品验收报告.md",
         templates_dir / "发布记录模板.md": request_dir / f"{args.title}-发布记录.md",
         templates_dir / "stage-status模板.json": request_dir / "stage-status.json",
     }

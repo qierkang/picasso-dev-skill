@@ -5,6 +5,19 @@ default_request_type: new-feature
 default_branch: ${PICASSO_DEFAULT_BRANCH}
 workspace_dir: ${PICASSO_WORKSPACE_DIR}
 request_key_rule: kebab-case-english
+environment_boundary:
+  mode: ${PICASSO_ENV_BOUNDARY_MODE}
+  allowed_runtime_profiles: ${PICASSO_ALLOWED_RUNTIME_PROFILES}
+  forbidden_runtime_profiles: ${PICASSO_FORBIDDEN_RUNTIME_PROFILES}
+preflight:
+  enabled: true
+  docs_capability: docs
+  dev_capability: dev
+  db_capability: db
+  deploy_capability: deploy
+  install_guide: install/开发环境安装指引.md
+  block_on_failure: true
+  autopilot_after_pass: true
 platforms:
   backend: true
   pc: true
@@ -17,14 +30,12 @@ repos:
   mobile_app: ${PICASSO_MOBILE_APP_CODE_DIR}
 task_root: ${PICASSO_SERVER_TASK_DIR}
 environments:
-  local:
+  local_runtime:
+    profiles: ${PICASSO_ALLOWED_RUNTIME_PROFILES}
     db_host: ${PICASSO_LOCAL_DB_HOST}
     db_port: ${PICASSO_LOCAL_DB_PORT}
     db_name: ${PICASSO_LOCAL_DB_NAME}
-  test:
-    db_host: ${PICASSO_TEST_DB_HOST}
-    db_port: ${PICASSO_TEST_DB_PORT}
-    db_name: ${PICASSO_TEST_DB_NAME}
+    require_psql: ${PICASSO_REQUIRE_LOCAL_DB_CLI}
 tools:
   primary_cli: ${CLAUDE_BIN}
   coding_cli: ${CODEX_BIN}

@@ -23,7 +23,9 @@
     "保养方案-前端关键流程覆盖清单.md",
     "保养方案-代码审查报告.md",
     "保养方案-冒烟测试报告.md",
-    "保养方案-QA与产品验收报告.md"
+    "保养方案-QA验收报告.md",
+    "保养方案-UI验收报告.md",
+    "保养方案-产品验收报告.md"
   ],
   "next_action": "修复 dev 阶段阻塞项并重新执行 stage-gate.py dev",
   "release_decision": "NEEDS_WORK",

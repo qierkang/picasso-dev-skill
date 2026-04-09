@@ -7,6 +7,8 @@
 - 只读了需求文档，没读规则文档
 - 不清楚允许改哪些仓库、哪些模块
 - 只改代码，不做质量验证
+- 没做环境预检就直接开始编码或执行 SQL
+- 不清楚当前只能操作 `local / dev` 边界
 
 ## 2. 标准输入模板
 
@@ -17,6 +19,9 @@
 - task_name:
 - target_module:
 - task_type: 开发 / 修复 / 文档同步 / 测试 / 审查
+- capability_mode: docs / dev / db / deploy
+- doctor_command:
+- install_guide_doc:
 
 【需求目录】
 - requirements_dir:
@@ -33,6 +38,13 @@
 - coverage_report_doc:
 - fe_checklist_doc:
 - qa_acceptance_doc:
+- ui_acceptance_doc:
+- product_acceptance_doc:
+
+【环境边界】
+- environment_boundary: local-only
+- allowed_runtime_profiles: local,dev
+- forbidden_runtime_profiles: test,uat,prod
 
 【必须阅读的规则文档】
 - shared/references/requirements/README.md
@@ -49,9 +61,12 @@
 - forbidden_scope:
 
 【执行要求】
+- 开始前先执行 `doctor_command`，未通过不进入真实开发
+- 只允许操作 `local / dev`，禁止连接、查询、部署 `test / uat / prod`
 - 只在 allowed_scope 内修改
 - 修改前先理解当前系统框架
 - 修改完成后必须执行验证命令
+- 环境通过后默认自主推进 routine 动作，不反复询问是否继续
 
 【输出物要求】
 - 代码修改
@@ -69,7 +84,8 @@
 2. `00-需求总览.md`
 3. `Codex CLI 标准执行输入.md`
 4. 公共规则文档
-5. `需求文档`
-6. `技术方案`
-7. `UI交互设计规范`
-8. `测试用例`
+5. 根据 `capability_mode` 先执行对应 `doctor.sh`
+6. `需求文档`
+7. `技术方案`
+8. `UI交互设计规范`
+9. `测试用例`

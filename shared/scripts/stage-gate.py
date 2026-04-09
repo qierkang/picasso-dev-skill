@@ -32,7 +32,9 @@ REPORT_MARKERS = {
         "### 3.1 第2关汇总",
         "## 4. 结论",
     ],
-    "QA与产品验收报告": ["## 元信息", "执行时间", "执行人", "## 4. 结论"],
+    "QA验收报告": ["## 元信息", "执行时间", "执行人", "## 3. 结论"],
+    "UI验收报告": ["## 元信息", "执行时间", "执行人", "## 4. 结论"],
+    "产品验收报告": ["## 元信息", "执行时间", "执行人", "## 3. 结论"],
     "发布记录": ["## 元信息", "目标环境", "## 1. 发布前确认", "## 3. 发布后验证", "## 5. 结论"],
 }
 
@@ -43,8 +45,9 @@ DOC_ALIASES = {
     "review_report": ["代码审查报告"],
     "smoke_report": ["冒烟测试报告"],
     "smoke_script": ["冒烟测试脚本"],
-    "qa_report": ["QA与产品验收报告"],
-    "acceptance_report": ["QA与产品验收报告"],
+    "qa_report": ["QA验收报告"],
+    "ui_acceptance_report": ["UI验收报告"],
+    "product_acceptance_report": ["产品验收报告"],
     "release_report": ["发布记录"],
 }
 
@@ -138,8 +141,10 @@ def next_action(stage: str, passed: bool) -> str:
     if stage == "smoke":
         return "冒烟通过，进入 QA 阶段"
     if stage == "qa":
-        return "QA 通过，进入产品验收阶段"
-    if stage == "acceptance":
+        return "QA 通过，进入 UI 验收阶段"
+    if stage == "ui_acceptance":
+        return "UI 验收通过，进入产品验收阶段"
+    if stage == "product_acceptance":
         return "产品验收通过，可准备发布"
     return "发布通过，可归档并关闭需求"
 
@@ -171,7 +176,9 @@ def record(status: dict[str, Any], stage: str, passed: bool, details: list[str])
         status["retry_count"] = int(status.get("retry_count", 0)) + 1
         status["last_failed_by"] = stage
         status["blocking_issues"] = details
-        status["current_cycle"] = "dev-qa-loop" if stage in {"dev", "review", "smoke", "qa"} else "planning"
+        status["current_cycle"] = (
+            "dev-qa-loop" if stage in {"dev", "review", "smoke", "qa", "ui_acceptance", "product_acceptance"} else "planning"
+        )
         status["next_action"] = next_action(stage, passed=False)
         status["release_decision"] = "NEEDS_WORK"
 
@@ -304,30 +311,64 @@ def check_qa(status: dict[str, Any], requirements_dir: Path, manifest: dict[str,
     if not smoke_check or not smoke_check.get("passed"):
         issues.append("冒烟测试阶段卡点未通过，禁止进入 QA")
     if qa_report is None:
-        issues.append("缺少 QA与产品验收报告")
-    issues.extend(validate_markers(qa_report, "QA与产品验收报告"))
+        issues.append("缺少 QA验收报告")
+    issues.extend(validate_markers(qa_report, "QA验收报告"))
     if qa_report is not None:
         content = qa_report.read_text(encoding="utf-8")
-        if "是否验收通过：`否`" in content or "是否回流开发：`是`" in content:
-            issues.append("QA 与产品验收报告仍为未通过状态")
+        if "是否QA通过：`否`" in content:
+            issues.append("QA验收报告仍为未通过状态")
+        if "是否回流开发：`是`" in content:
+            issues.append("QA验收报告要求回流开发，禁止继续推进")
+        if "P0 / 阻塞项是否清零：`否`" in content:
+            issues.append("QA 阻塞项未清零，禁止进入 UI 验收")
     return (not issues, issues or ["QA 阶段卡点通过"])
 
 
-def check_acceptance(status: dict[str, Any], requirements_dir: Path, manifest: dict[str, Any]) -> tuple[bool, list[str]]:
+def check_ui_acceptance(status: dict[str, Any], requirements_dir: Path, manifest: dict[str, Any]) -> tuple[bool, list[str]]:
     issues: list[str] = []
     qa_check = status.get("checks", {}).get("qa")
-    acceptance_report = resolve_doc(requirements_dir, manifest, "acceptance_report")
+    ui_report = resolve_doc(requirements_dir, manifest, "ui_acceptance_report")
     if not qa_check or not qa_check.get("passed"):
-        issues.append("QA 阶段卡点未通过，禁止进入产品验收")
-    if acceptance_report is None:
-        issues.append("缺少 QA与产品验收报告")
-    issues.extend(validate_markers(acceptance_report, "QA与产品验收报告"))
+        issues.append("QA 阶段卡点未通过，禁止进入 UI 验收")
+    if ui_report is None:
+        issues.append("缺少 UI验收报告")
+    issues.extend(validate_markers(ui_report, "UI验收报告"))
+    if ui_report is not None:
+        content = ui_report.read_text(encoding="utf-8")
+        if "是否UI验收通过：`否`" in content:
+            issues.append("UI验收报告仍为未通过状态")
+        if "是否回流UI/前端：`是`" in content:
+            issues.append("UI验收报告要求回流 UI / 前端，禁止进入产品验收")
+        if "页面差异是否清零：`否`" in content:
+            issues.append("页面差异未清零，禁止进入产品验收")
+    return (not issues, issues or ["UI 验收阶段卡点通过"])
+
+
+def check_product_acceptance(
+    status: dict[str, Any], requirements_dir: Path, manifest: dict[str, Any]
+) -> tuple[bool, list[str]]:
+    issues: list[str] = []
+    ui_check = status.get("checks", {}).get("ui_acceptance")
+    product_report = resolve_doc(requirements_dir, manifest, "product_acceptance_report")
+    if not ui_check or not ui_check.get("passed"):
+        issues.append("UI 验收阶段卡点未通过，禁止进入产品验收")
+    if product_report is None:
+        issues.append("缺少 产品验收报告")
+    issues.extend(validate_markers(product_report, "产品验收报告"))
+    if product_report is not None:
+        content = product_report.read_text(encoding="utf-8")
+        if "是否产品验收通过：`否`" in content:
+            issues.append("产品验收报告仍为未通过状态")
+        if "是否允许进入发布准备：`否`" in content:
+            issues.append("产品验收未允许进入发布准备")
+        if "是否回流需求/开发：`是`" in content:
+            issues.append("产品验收要求回流需求 / 开发，禁止进入发布")
     return (not issues, issues or ["产品验收阶段卡点通过"])
 
 
 def check_release(status: dict[str, Any], requirements_dir: Path, manifest: dict[str, Any]) -> tuple[bool, list[str]]:
     issues: list[str] = []
-    acceptance_check = status.get("checks", {}).get("acceptance")
+    acceptance_check = status.get("checks", {}).get("product_acceptance")
     release_report = resolve_doc(requirements_dir, manifest, "release_report")
     if not acceptance_check or not acceptance_check.get("passed"):
         issues.append("产品验收阶段卡点未通过，禁止进入发布")
@@ -343,7 +384,11 @@ def check_release(status: dict[str, Any], requirements_dir: Path, manifest: dict
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Picasso 阶段放行校验")
-    parser.add_argument("stage", choices=["dev", "review", "smoke", "qa", "acceptance", "release"], help="要校验的阶段")
+    parser.add_argument(
+        "stage",
+        choices=["dev", "review", "smoke", "qa", "ui_acceptance", "product_acceptance", "release"],
+        help="要校验的阶段",
+    )
     parser.add_argument("requirements_dir", help="需求目录路径")
     parser.add_argument("--backend-project", help="后端项目路径", default=None)
     args = parser.parse_args()
@@ -368,8 +413,10 @@ def main() -> int:
             passed, details = check_smoke(status, requirements_dir, manifest)
         elif args.stage == "qa":
             passed, details = check_qa(status, requirements_dir, manifest)
-        elif args.stage == "acceptance":
-            passed, details = check_acceptance(status, requirements_dir, manifest)
+        elif args.stage == "ui_acceptance":
+            passed, details = check_ui_acceptance(status, requirements_dir, manifest)
+        elif args.stage == "product_acceptance":
+            passed, details = check_product_acceptance(status, requirements_dir, manifest)
         else:
             passed, details = check_release(status, requirements_dir, manifest)
 

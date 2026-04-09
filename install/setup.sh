@@ -40,4 +40,4 @@ for keep_dir in \
 done
 
 echo "[INFO] 目录初始化完成"
-echo "[INFO] 下一步请执行: bash install/doctor.sh"
+echo "[INFO] 下一步请执行: bash install/doctor.sh --capability dev"

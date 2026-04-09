@@ -8,15 +8,33 @@
   "mode": "picasso-dev-skill-v1",
   "workflow_profile": {
     "task_slice_minutes": "30-60",
-    "execution_loop": "dev->qa->rework",
+    "execution_loop": "dev->qa->ui->product->rework",
     "evidence_first": true,
     "default_release_decision": "NEEDS_WORK",
     "max_dev_qa_retries": 3
   },
+  "environment_policy": {
+    "boundary_mode": "local-only",
+    "allowed_runtime_profiles": [
+      "local",
+      "dev"
+    ],
+    "forbidden_runtime_profiles": [
+      "test",
+      "uat",
+      "prod"
+    ],
+    "doctor_commands": {
+      "docs": "bash install/doctor.sh --capability docs",
+      "dev": "bash install/doctor.sh --capability dev",
+      "db": "bash install/doctor.sh --capability db",
+      "deploy": "bash install/doctor.sh --capability deploy"
+    }
+  },
   "generation_policy": {
     "default_bundle_only": true,
-    "default_total_files": 18,
-    "default_markdown_docs": 15,
+    "default_total_files": 20,
+    "default_markdown_docs": 17,
     "default_auxiliary_files": [
       "manifest.json",
       "stage-status.json",
@@ -45,7 +63,9 @@
       "保养方案-前端关键流程覆盖清单.md",
       "保养方案-代码审查报告.md",
       "保养方案-冒烟测试报告.md",
-      "保养方案-QA与产品验收报告.md",
+      "保养方案-QA验收报告.md",
+      "保养方案-UI验收报告.md",
+      "保养方案-产品验收报告.md",
       "保养方案-发布记录.md"
     ]
   },
@@ -56,8 +76,9 @@
     "review_report": "保养方案-代码审查报告.md",
     "smoke_report": "保养方案-冒烟测试报告.md",
     "smoke_script": "保养方案-冒烟测试脚本.sh",
-    "qa_report": "保养方案-QA与产品验收报告.md",
-    "acceptance_report": "保养方案-QA与产品验收报告.md",
+    "qa_report": "保养方案-QA验收报告.md",
+    "ui_acceptance_report": "保养方案-UI验收报告.md",
+    "product_acceptance_report": "保养方案-产品验收报告.md",
     "release_report": "保养方案-发布记录.md"
   },
   "required_public_rules": [

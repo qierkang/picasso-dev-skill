@@ -25,3 +25,17 @@
 - 发布流程升级为六步法，并新增 `发布记录模板.md`
 - 两关制冒烟脚本模板升级，补强第 2 关的文件、路由、Controller 校验项
 - `sync.sh` 现在会同步根级 `picasso-dev-skill` 包和独立子 skill
+
+## v0.3.1
+
+- 将原先合并的 `QA与产品验收` 正式拆分为 `QA验证`、`UI验收`、`产品验收` 三个独立卡点
+- 新增 `QA验收报告模板.md`、`UI验收报告模板.md`、`产品验收报告模板.md`
+- `stage-gate.py` 现在要求按 `qa -> ui_acceptance -> product_acceptance -> release` 顺序推进
+- `maintenance-plan` 示例已同步改成三份独立验收报告，便于真实模拟与教学演示
+
+## v0.3.2
+
+- 新增按能力划分的环境预检闭环：`docs / dev / db / deploy / all`
+- `doctor.sh` 现在会校验 `local-only` 边界、Java 21、前端仓库声明的 `node / pnpm` 最低版本，以及本地 `psql`
+- 主 skill、workflow、manifest、Codex CLI 标准执行输入统一要求：先通过 `doctor.sh`，再进入真实开发
+- 当前 skill 的默认执行风格收紧为“环境通过后自主推进 routine 动作，只在真实阻塞时升级给使用者”

@@ -102,7 +102,9 @@ picasso-dev-skill/
 - `代码审查报告模板.md`
 - `冒烟测试脚本模板.sh`
 - `冒烟测试报告模板.md`
-- `QA与产品验收报告模板.md`
+- `QA验收报告模板.md`
+- `UI验收报告模板.md`
+- `产品验收报告模板.md`
 - `发布记录模板.md`
 
 ### 公共规则入口
@@ -135,21 +137,45 @@ picasso-dev-skill/
 
 ## 🛠️ 环境要求
 
-### 必备工具
+### 基础能力
 
 - `git`
 - `python3`
 - `claude` 或其他主模型 CLI
 - `codex`（如需 Codex 执行编码）
 
-### 按需工具
+### 后端开发能力
 
-- `node`
+- `java` 21+
+- `maven` 或仓库内 `mvnw`
+
+### 前端 / 小程序开发能力
+
+- `node` 20+
 - `pnpm`
-- `psql`
+
+### 本地数据库能力
+
+- `psql`（需要做本地 SQL / 数据查询时）
+
+### 移动端能力
+
 - `flutter`
-- 小程序开发工具
-- `ssh`
+- 小程序开发工具（按需）
+
+## 🔒 环境边界
+
+当前 skill 固定为 `local-only` 模式：
+
+- 允许：`local`、`dev`
+- 禁止：`test`、`uat`、`prod`
+
+也就是说：
+
+- 开发、自测、SQL、冒烟、发布准备都只允许在 `local / dev`
+- 不能尝试连接测试、UAT、生产数据库
+- 不能尝试连接测试、UAT、生产服务器部署
+- 如果服务端仓库存在 `application-test.yaml`、`application-uat.yaml`、`application-prod.yaml`，它们只用于识别边界，不代表允许访问
 
 ## 🚀 快速开始
 
@@ -176,7 +202,7 @@ bash install/setup.sh
 ### 4. 执行环境体检
 
 ```bash
-bash install/doctor.sh
+bash install/doctor.sh --capability dev
 ```
 
 ### 5. 同步技能到本地 AI 环境
@@ -201,9 +227,23 @@ bash install/sync.sh
 
 ### `doctor.sh`
 
-- 检查 `git`、`python3`、`claude`、`codex`
-- 检查 Picasso 各源码路径、任务目录、`workspace/` 可写性
-- 检查 OpenClaw / Claude / Codex 的技能目录配置
+- 支持按能力体检：`docs / dev / db / deploy / all`
+- `docs` 只校验文档产出所需的最小运行条件
+- 开发前检查 `java / maven / node / pnpm / flutter` 等工具链
+- 会校验 Picasso 前端仓库声明的 `node / pnpm` 最低版本，以及 Java 21 基线
+- 查询数据库前检查 `psql` 和本地数据库 Host 是否仍是 `127.0.0.1 / localhost`
+- 自动识别 `application-local.yaml / application-dev.yaml / application-test.yaml / application-uat.yaml / application-prod.yaml`
+- 明确把 `test / uat / prod` 识别为受限环境
+- 当前能力没通过时，默认先修环境，再继续真实开发
+
+常用命令：
+
+```bash
+bash install/doctor.sh --capability docs
+bash install/doctor.sh --capability dev
+bash install/doctor.sh --capability db
+bash install/doctor.sh --capability deploy
+```
 
 ### `sync.sh`
 
@@ -221,9 +261,22 @@ bash install/sync.sh
 
 ## ⚙️ 配置说明
 
+## 🧭 使用前的默认规则
+
+进入任意真实开发线程前，默认按下面顺序执行：
+
+1. 先判断当前只需要 `docs`、还是已经进入 `dev / db / deploy`
+2. 先跑对应能力的 `doctor.sh`
+3. `doctor` 失败时先修环境，再重跑同一能力
+4. 只有当前能力无 `FAIL`，才进入真实开发动作
+5. 环境通过后默认自主推进，不反复询问“要不要继续”
+
 `.env` 中至少需要配置以下内容：
 
 ```env
+PICASSO_ENV_BOUNDARY_MODE=local-only
+PICASSO_ALLOWED_RUNTIME_PROFILES=local,dev
+PICASSO_FORBIDDEN_RUNTIME_PROFILES=test,uat,prod
 PICASSO_SERVER_CODE_DIR=
 PICASSO_FRONT_CODE_DIR=
 PICASSO_MINIAPP_CODE_DIR=
@@ -231,6 +284,10 @@ PICASSO_MOBILE_APP_CODE_DIR=
 PICASSO_SERVER_TASK_DIR=./workspace/server-tasks
 PICASSO_DEFAULT_BRANCH=master
 PICASSO_WORKSPACE_DIR=./workspace
+PICASSO_LOCAL_DB_HOST=127.0.0.1
+PICASSO_LOCAL_DB_PORT=5432
+PICASSO_LOCAL_DB_NAME=ruoyi-vue-pro
+PICASSO_REQUIRE_LOCAL_DB_CLI=true
 OPENCLAW_SKILLS_DIR=
 CLAUDE_SKILLS_DIR=
 CODEX_SKILLS_DIR=
@@ -240,6 +297,9 @@ CODEX_SKILLS_DIR=
 
 | 配置项 | 说明 |
 |--------|------|
+| `PICASSO_ENV_BOUNDARY_MODE` | 当前必须固定为 `local-only` |
+| `PICASSO_ALLOWED_RUNTIME_PROFILES` | 允许操作的 profile，固定 `local,dev` |
+| `PICASSO_FORBIDDEN_RUNTIME_PROFILES` | 禁止操作的 profile，固定 `test,uat,prod` |
 | `PICASSO_SERVER_CODE_DIR` | 后端源码目录 |
 | `PICASSO_FRONT_CODE_DIR` | PC 前端源码目录 |
 | `PICASSO_MINIAPP_CODE_DIR` | 小程序源码目录 |
@@ -247,9 +307,34 @@ CODEX_SKILLS_DIR=
 | `PICASSO_SERVER_TASK_DIR` | 服务端任务管理目录 |
 | `PICASSO_DEFAULT_BRANCH` | 默认开发基线分支 |
 | `PICASSO_WORKSPACE_DIR` | 运行产物目录 |
+| `PICASSO_LOCAL_DB_HOST/PORT/NAME` | 本地数据库连接 |
+| `PICASSO_REQUIRE_LOCAL_DB_CLI` | 查询本地库时是否强制要求 `psql` |
 | `OPENCLAW_SKILLS_DIR` | OpenClaw 技能同步目录 |
 | `CLAUDE_SKILLS_DIR` | Claude 技能同步目录 |
 | `CODEX_SKILLS_DIR` | Codex 技能同步目录 |
+
+## 🧪 使用前的默认规则
+
+1. 纯文档任务：
+   - 可以只跑 `bash install/doctor.sh --capability docs`
+   - 不强依赖完整开发工具链
+2. 进入编码前：
+   - 先跑 `bash install/doctor.sh --capability dev`
+3. 进入 SQL / 数据查询前：
+   - 先跑 `bash install/doctor.sh --capability db`
+4. 进入本地启动 / 冒烟 / 发布准备前：
+   - 先跑 `bash install/doctor.sh --capability deploy`
+5. 未通过对应能力体检前，不进入下一步真实开发
+
+## 🤖 执行风格
+
+这套 skill 的目标不是每一步都问使用者“要不要继续”，而是：
+
+- 在规则明确的前提下默认自主执行
+- 先自检环境，再推进开发
+- 发现缺失时，先自动修 skill 自身问题
+- 遇到外部环境缺失时，再一步步引导安装
+- 最终尽量只向使用者交付访问地址、账号密码、验证路径和结果
 
 ### 新同事只需要改哪些
 
@@ -303,7 +388,7 @@ UI 阶段调用 picasso-dev-ui
 
 ## 🔄 标准开发流程
 
-`需求分析 → 技术方案 → UI设计 → 任务拆解 → 编码开发 → 开发自测 → 代码审查 → 冒烟测试 → QA验收 → 部署上线`
+`需求分析 → 技术方案 → UI设计 → 任务拆解 → 编码开发 → 开发自测 → 代码审查 → 冒烟测试 → QA验证 → UI验收 → 产品验收 → 部署上线`
 
 ### 强制 Gate
 
@@ -312,7 +397,9 @@ UI 阶段调用 picasso-dev-ui
 - `覆盖率卡点`：没有 `覆盖率报告.md` 和 `前端关键流程覆盖清单.md` 不进入 review
 - `代码审查卡点`：有 `P0 / 阻塞` 不进入 smoke
 - `冒烟测试卡点`：未达到 `100% 通过` 不进入 QA
-- `QA / 产品验收卡点`：默认结论为 `NEEDS_WORK`
+- `QA 验证卡点`：未通过不进入 UI 验收
+- `UI 验收卡点`：未通过不进入产品验收
+- `产品验收卡点`：默认结论为 `NEEDS_WORK`
 
 ## 📂 workspace 说明
 
@@ -338,7 +425,9 @@ workspace/
         ├── 保养方案-代码审查报告.md
         ├── 保养方案-冒烟测试脚本.sh
         ├── 保养方案-冒烟测试报告.md
-        ├── 保养方案-QA与产品验收报告.md
+        ├── 保养方案-QA验收报告.md
+        ├── 保养方案-UI验收报告.md
+        ├── 保养方案-产品验收报告.md
         ├── logs/
         └── stage-status.json
 ```
