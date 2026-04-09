@@ -1,0 +1,75 @@
+version: 1
+
+policy:
+  strategy: internalize-first
+  runtime_dependency: forbidden
+  vendor_directory: vendor/skills
+  owner_skill: skills/picasso-dev-methods
+  notes:
+    - 优先把高价值方法内化为 Picasso 自身规则
+    - 非必要不直接镜像外部 skill 全量内容
+    - 任何外部来源都不能成为宿主机运行依赖
+
+sources:
+  - id: linux-do-coding-agent-skills-1802808
+    name: 精选 Skills 推荐：10 个让 Coding Agent 如虎添翼的 Skills
+    url: https://linux.do/t/topic/1802808
+    type: article
+
+adoptions:
+  - capability: planning
+    source: linux-do-coding-agent-skills-1802808
+    source_skill: writing-plans
+    adoption: internalized
+    owner: skills/picasso-dev-methods/references/planning.md
+  - capability: test-driven-development
+    source: linux-do-coding-agent-skills-1802808
+    source_skill: test-driven-development
+    adoption: internalized
+    owner: skills/picasso-dev-methods/references/tdd.md
+  - capability: systematic-debugging
+    source: linux-do-coding-agent-skills-1802808
+    source_skill: systematic-debugging
+    adoption: internalized
+    owner: skills/picasso-dev-methods/references/debugging.md
+  - capability: verification-before-completion
+    source: linux-do-coding-agent-skills-1802808
+    source_skill: verification-before-completion
+    adoption: internalized
+    owner: skills/picasso-dev-methods/references/verification.md
+  - capability: receiving-code-review
+    source: linux-do-coding-agent-skills-1802808
+    source_skill: receiving-code-review
+    adoption: internalized
+    owner: skills/picasso-dev-methods/references/review.md
+  - capability: parallel-and-isolation
+    source: linux-do-coding-agent-skills-1802808
+    source_skill: dispatching-parallel-agents
+    adoption: internalized
+    owner: skills/picasso-dev-methods/references/parallel-and-isolation.md
+  - capability: skill-maintenance
+    source: linux-do-coding-agent-skills-1802808
+    source_skill: skill-creator
+    adoption: partially-internalized
+    owner: skills/picasso-dev-maintainer/SKILL.md
+    notes:
+      - 由 maintainer 流程、governance 和记要机制承接
+      - 当前不单独复制外部 skill-creator
+  - capability: framework-shell
+    source: linux-do-coding-agent-skills-1802808
+    source_skill: SuperClaude Framework
+    adoption: not-vendored
+    notes:
+      - Picasso 维持自身主流程，不引入外部总控框架替代
+      - 仅借鉴清晰分层与适配目录思路
+
+adapter_strategy:
+  pattern: explicit-runtime-adapters
+  directories:
+    - .claude-plugin
+    - .codex
+    - .opencode
+    - .openclaw
+  notes:
+    - 适配层只描述接入方式和执行边界
+    - 主流程与方法层仍以 skills/、shared/、profiles/ 为准

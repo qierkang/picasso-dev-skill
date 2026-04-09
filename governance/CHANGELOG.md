@@ -47,3 +47,32 @@
 - `deploy doctor` 现在会校验运行编排入口：后端 / 前端启动命令、ready 地址、自动登录配置
 - 冒烟脚本模板与 `maintenance-plan` 示例已切换到可执行运行编排口径
 - 已用 mock 前后端完成一次真实模拟，验证“自动启动 → 自动联调 → 自动冒烟 → 自动收尾”闭环可跑通
+
+## v0.3.4
+
+- 新增 `skills/picasso-dev-methods`，把 planning、TDD、systematic debugging、verification、review、parallel/isolation 方法内化进包内
+- 新增 `vendor/` 与 `governance/vendor-skills.yaml`，明确“internalize-first + 禁止运行时外部依赖”的策略
+- 新增 `.claude-plugin/`、`.codex/`、`.opencode/`、`.openclaw/` 适配层目录，提升多运行端目录可理解性
+- `README.md`、主入口 skill、维护规则与同步脚本已同步更新，保证方法层与适配层可以一起分发
+
+## v0.3.5
+
+- 收敛 README 与适配层文案，明确 `picasso-dev-skill` 是“模型无关、运行端兼容”的流程标准包
+- 明确 OpenClaw 可独立使用，Claude Code + Codex 协作是兼容增强方案，不是前置依赖
+
+## v0.3.6
+
+- 新增根目录 `START-HERE.md`，作为新环境与首次接手场景的统一入口
+- `README.md`、根级 `SKILL.md`、`sync.sh` 已同步接入 `START-HERE.md`
+- `START-HERE.md` 已单独补充“Claude Code + Codex + codex-plugin-cc”协作入口说明，四个适配层入口也已统一指向 `START-HERE.md`
+
+## v0.3.7
+
+- `shared/templates/需求文档模板.md` 已改为“产品经理版页面拆解骨架 + AI 版结构化补充 + 当前 skill 系统级强约束”融合版
+- 新模板默认支持按模块拆成列表页、详情页、系统字段、按钮行为、业务规则来填写
+- 同时补入 `范围说明`、`数据联动与回写`、`审批流与特殊分支` 等更适合 AI 生成和后续开发映射的结构块
+
+## v0.3.8
+
+- `README.md` 已补充 `Harness Engineering 思路参考` 章节
+- 当前对外定位明确为“参考 Harness Engineering 的标准化思路做结构收敛”，不把仓库表述成独立框架实现

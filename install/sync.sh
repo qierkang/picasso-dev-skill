@@ -28,18 +28,35 @@ sync_target() {
   mkdir -p "$package_dir"
 
   cp "$ROOT_DIR/SKILL.md" "$package_dir/SKILL.md"
+  cp "$ROOT_DIR/START-HERE.md" "$package_dir/START-HERE.md"
+  cp "$ROOT_DIR/AGENTS.md" "$package_dir/AGENTS.md"
   cp "$ROOT_DIR/README.md" "$package_dir/README.md"
   cp "$ROOT_DIR/.env.example" "$package_dir/.env.example"
   cp -R "$ROOT_DIR/install" "$package_dir/install"
   cp -R "$ROOT_DIR/skills" "$package_dir/skills"
   cp -R "$ROOT_DIR/profiles" "$package_dir/profiles"
   cp -R "$ROOT_DIR/shared" "$package_dir/shared"
+  cp -R "$ROOT_DIR/vendor" "$package_dir/vendor"
+  cp -R "$ROOT_DIR/docs" "$package_dir/docs"
+
+  if [ -d "$ROOT_DIR/.claude-plugin" ]; then
+    cp -R "$ROOT_DIR/.claude-plugin" "$package_dir/.claude-plugin"
+  fi
+  if [ -d "$ROOT_DIR/.codex" ]; then
+    cp -R "$ROOT_DIR/.codex" "$package_dir/.codex"
+  fi
+  if [ -d "$ROOT_DIR/.opencode" ]; then
+    cp -R "$ROOT_DIR/.opencode" "$package_dir/.opencode"
+  fi
+  if [ -d "$ROOT_DIR/.openclaw" ]; then
+    cp -R "$ROOT_DIR/.openclaw" "$package_dir/.openclaw"
+  fi
 
   mkdir -p "$package_dir/workspace"
   cp "$ROOT_DIR/workspace/README.md" "$package_dir/workspace/README.md"
 
-  mkdir -p "$package_dir/governance"
-  cp "$ROOT_DIR/governance/CHANGELOG.md" "$package_dir/governance/CHANGELOG.md"
+  cp -R "$ROOT_DIR/governance" "$package_dir/governance"
+  find "$package_dir" -name '.DS_Store' -delete
 
   echo "[PASS] 已同步 picasso-dev-skill 根包 -> $package_dir"
 
@@ -48,6 +65,7 @@ sync_target() {
     skill_name="$(basename "$skill_dir")"
     rm -rf "$target_dir/$skill_name"
     cp -R "$skill_dir" "$target_dir/$skill_name"
+    find "$target_dir/$skill_name" -name '.DS_Store' -delete
     echo "[PASS] 已同步 $skill_name -> $target_dir"
   done
 }
@@ -55,5 +73,6 @@ sync_target() {
 sync_target "OpenClaw" "${OPENCLAW_SKILLS_DIR:-}"
 sync_target "Claude" "${CLAUDE_SKILLS_DIR:-}"
 sync_target "Codex" "${CODEX_SKILLS_DIR:-}"
+sync_target "OpenCode" "${OPENCODE_SKILLS_DIR:-}"
 
 echo "[INFO] 技能同步完成"

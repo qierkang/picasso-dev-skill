@@ -11,6 +11,10 @@ description: Use when the user wants to use the Picasso development skill packag
 
 它的作用不是重复定义整套流程，而是让任何只识别“根目录是否有 `SKILL.md`”的平台，也能正确进入 Picasso 技能包。
 
+如果是第一次接手当前仓库，先读：
+
+- `START-HERE.md`
+
 ## 使用原则
 
 1. 遇到 Picasso 项目开发任务，默认先转到 `skills/picasso-dev/SKILL.md`
@@ -43,6 +47,8 @@ description: Use when the user wants to use the Picasso development skill packag
   - PC / 小程序 / App 的 UI 设计、页面优化、原型还原
 - `skills/picasso-dev-config/SKILL.md`
   - 菜单、字典、SQL、环境配置和联调依赖
+- `skills/picasso-dev-methods/SKILL.md`
+  - 规划、TDD、系统化排障、完成前验证、审查处理、多代理并行与隔离
 - `skills/picasso-dev-maintainer/SKILL.md`
   - 技能包自身维护、治理记录、Changelog、迁移说明
 
@@ -51,10 +57,11 @@ description: Use when the user wants to use the Picasso development skill packag
 若当前平台只从根目录进入，请至少先读取：
 
 1. `README.md`
-2. `profiles/picasso/profile.yaml`
-3. `profiles/picasso/execution-modes.md`
-4. `shared/references/requirements/README.md`
-5. `shared/references/task/README.md`
+2. `START-HERE.md`
+3. `profiles/picasso/profile.yaml`
+4. `profiles/picasso/execution-modes.md`
+5. `shared/references/requirements/README.md`
+6. `shared/references/task/README.md`
 
 然后再进入对应子 skill。
 
