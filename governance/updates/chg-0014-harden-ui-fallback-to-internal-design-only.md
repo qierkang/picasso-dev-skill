@@ -1,0 +1,26 @@
+# chg-0014 UI fallback 规则加硬
+
+- 提交人：qierkang+codex
+- 日期：2026-04-12
+- 影响范围：
+  - `AGENTS.md`
+  - `CLAUDE.md`
+  - `SKILL.md`
+  - `README.md`
+  - `.claude-plugin/`
+  - `.codex/`
+  - `skills/picasso-dev/`
+  - `skills/picasso-dev-ui/`
+  - `skills/picasso-dev-design-system/`
+  - `shared/references/design/README.md`
+- 变更原因：
+  - 真实 Claude 隔离回归显示：当用户级 `ui-ux-pro-max` 不可见时，模型会自行把 `frontend-design` 当作 UI fallback，这与 Picasso 技能包的预期不一致
+  - Picasso 的目标是“外部高质量设计 skill 可插拔，但缺失时必须稳定回退到包内设计底座”，而不是被宿主机其他通用 design skill 抢路
+- 本次修改：
+  - 将 UI fallback 规则收紧为：`ui-ux-pro-max` 缺失时，只允许回退到 `shared/references/design/`
+  - 在根入口、主入口、UI companion、设计系统 companion、适配层和设计参考索引中显式点名：不得改用 `frontend-design` 或其他通用设计 skill 兜底
+- 对使用者的影响：
+  - 不同机器、不同运行端下的 UI 设计路径会更稳定，减少“宿主机里恰好装了别的 design skill 就走偏”的情况
+  - 设计质量增强仍可用外部 `ui-ux-pro-max`，但缺失时会稳定落到 Picasso 包内规则
+- 后续建议：
+  - 后续每次引入新的外部设计增强 skill，都应先声明“增强能力”还是“允许 fallback”，避免再次出现隐式抢路

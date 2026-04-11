@@ -15,6 +15,14 @@ sources:
     name: 精选 Skills 推荐：10 个让 Coding Agent 如虎添翼的 Skills
     url: https://linux.do/t/topic/1802808
     type: article
+  - id: twostraws-swiftui-agent-skill
+    name: SwiftUI-Agent-Skill
+    url: https://github.com/twostraws/SwiftUI-Agent-Skill
+    type: repository
+  - id: nextlevelbuilder-ui-ux-pro-max-skill
+    name: ui-ux-pro-max-skill
+    url: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
+    type: repository
 
 adoptions:
   - capability: planning
@@ -62,6 +70,22 @@ adoptions:
     notes:
       - Picasso 维持自身主流程，不引入外部总控框架替代
       - 仅借鉴清晰分层与适配目录思路
+  - capability: design-foundation
+    source: nextlevelbuilder-ui-ux-pro-max-skill
+    source_skill: ui-ux-pro-max
+    adoption: internalized
+    owner: shared/references/design/README.md
+    notes:
+      - 吸收风格库、多栈映射、UX 规则的设计方式
+      - 不镜像外部整包，不作为运行时依赖
+  - capability: ios-ui-specialization
+    source: twostraws-swiftui-agent-skill
+    source_skill: swiftui-pro
+    adoption: internalized
+    owner: shared/references/design/iOS-SwiftUI规范.md
+    notes:
+      - 吸收 iOS / SwiftUI / HIG / 可访问性审查思路
+      - 保持 Picasso 自身的多端主流程入口不变
 
 adapter_strategy:
   pattern: explicit-runtime-adapters

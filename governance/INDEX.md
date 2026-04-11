@@ -18,6 +18,9 @@
 - `updates/chg-0010-add-start-here-entry.md`
 - `updates/chg-0011-merge-pm-and-ai-requirement-template.md`
 - `updates/chg-0012-clarify-harness-engineering-positioning.md`
+- `updates/chg-0013-add-design-foundation-and-platform-ui-layer.md`
+- `updates/chg-0014-harden-ui-fallback-to-internal-design-only.md`
 - `decisions/dec-0001-local-only-preflight-and-autopilot.md`
 - `decisions/dec-0002-executable-runtime-orchestration.md`
 - `decisions/dec-0003-self-contained-method-layer.md`
+- `decisions/dec-0004-layered-design-foundation-and-platform-ui.md`

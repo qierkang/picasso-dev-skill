@@ -1,0 +1,29 @@
+# chg-0013 设计底座与平台 UI 专项层补强
+
+- 提交人：qierkang+codex
+- 日期：2026-04-12
+- 影响范围：
+  - `skills/`
+  - `shared/references/design/`
+  - `shared/templates/`
+  - `shared/prompts/`
+  - `README.md`
+  - `SKILL.md`
+  - `governance/vendor-skills.yaml`
+- 变更原因：
+  - 当前 Picasso 技能包在流程、Gate、验收上已经较完整，但 UI 设计更多停留在“文档结构”层，缺少设计知识底座和平台专项规范
+  - 用户明确希望增强 PC、HTML、iOS、Android、小程序的页面设计与交互质量
+  - 外部参考中，`ui-ux-pro-max-skill` 更适合补设计底座，`SwiftUI-Agent-Skill` 更适合补 iOS / SwiftUI 专项
+- 本次修改：
+  - 新增 `shared/references/design/` 设计参考目录
+  - 新增 `picasso-dev-design-system`、`picasso-dev-ui-review` 以及 `picasso-dev-ui-web / ios / android / miniapp`
+  - 将 `picasso-dev-ui` 收敛为“设计路由入口”
+  - 升级 UI 模板与 UI 验收模板，补齐风格、token、动效、可访问性结构
+  - 在 `vendor-skills.yaml` 中登记外部设计来源与采用方式
+- 对使用者的影响：
+  - 后续 UI 文档不再只写字段与状态，会更明确页面气质、组件语义和平台差异
+  - iOS、Android、小程序页面设计有了显式专项入口
+  - UI 验收可以从“页面像不像”升级到“设计基线有没有跑偏”
+- 后续建议：
+  - 后续如出现 Flutter / React Native 专项需求，再补“实现层映射”而不是继续把平台规则堆进通用入口
+  - 若要做更强自动化，可继续把 UI 文档关键段落接入脚本化校验

@@ -18,3 +18,7 @@
 12. 方法论增强统一由 `skills/picasso-dev-methods/SKILL.md` 提供，不依赖宿主机外部 skill 路径。
 13. `.claude-plugin/`、`.codex/`、`.opencode/`、`.openclaw/` 为运行端适配层；主流程与共享规则仍以 `skills/`、`shared/`、`profiles/`、`governance/` 为准。
 14. `vendor/` 是外部 skill 镜像预留区；是否内化、镜像或拒绝引入，以 `governance/vendor-skills.yaml` 为准。
+15. 涉及 UI 设计、页面优化、交互改版、设计系统输出时：
+   - 若当前运行端可识别 `ui-ux-pro-max`，优先借助它补风格方向、token、组件策略、动效、可访问性；
+   - 若当前运行端不可识别该外部 skill，自动回退到仓库内置的 `shared/references/design/`，不得因此中断主流程；
+   - 回退时默认不得改用 `frontend-design` 或其他通用设计 skill 充当兜底。

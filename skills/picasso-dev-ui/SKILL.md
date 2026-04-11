@@ -7,7 +7,7 @@ description: Use when Picasso 需求进入 UI 设计阶段，或需要优化 PC 
 
 ## 定位
 
-`picasso-dev-ui` 是 Picasso 项目的三端 UI companion skill。
+`picasso-dev-ui` 是 Picasso 项目的三端 UI companion skill 和 UI 设计路由入口。
 
 它不负责需求拆解、服务端方案或测试验收，而是只做三件事：
 
@@ -29,14 +29,52 @@ description: Use when Picasso 需求进入 UI 设计阶段，或需要优化 PC 
 
 1. `../../profiles/picasso/profile.yaml`
 2. `../../profiles/picasso/conventions.md`
-3. `../../shared/templates/UI交互设计模板.md`
-4. `../../shared/templates/页面接口验收总表模板.md`
-5. 当前需求目录中的：
+3. `../../shared/references/design/README.md`
+4. `../../shared/templates/UI交互设计模板.md`
+5. `../../shared/templates/页面接口验收总表模板.md`
+6. 当前需求目录中的：
    - `manifest.json`
    - `00-需求总览.md`
    - `*-需求文档.md`
    - `*-技术方案.md`（如存在）
-6. 用户提供的原型、HTML、截图、线上地址
+7. 用户提供的原型、HTML、截图、线上地址
+
+## 路由规则
+
+### 1. 先补设计底座
+
+默认先判断当前运行端是否可识别 `ui-ux-pro-max`：
+
+- 若可识别：优先让它输出风格方向、token、组件策略、动效与可访问性基线
+- 若不可识别：回退到 Picasso 包内设计底座
+- 默认不得把 `frontend-design` 或其他通用设计 skill 当成兜底替代
+
+无论哪种情况，最终都继续调用：
+
+- `../picasso-dev-design-system/SKILL.md`
+
+用于明确：
+
+- 风格方向
+- token 基线
+- 组件层级
+- 动效与反馈
+- 可访问性与响应式
+
+### 2. 再按平台补专项规则
+
+根据需求平台按需继续读取：
+
+- PC / H5：`../picasso-dev-ui-web/SKILL.md`
+- iOS / SwiftUI：`../picasso-dev-ui-ios/SKILL.md`
+- Android：`../picasso-dev-ui-android/SKILL.md`
+- 微信小程序：`../picasso-dev-ui-miniapp/SKILL.md`
+
+### 3. 验收或回归时补审查
+
+页面实现、截图或本地页面可见后，继续调用：
+
+- `../picasso-dev-ui-review/SKILL.md`
 
 ## 核心原则
 
@@ -52,16 +90,16 @@ description: Use when Picasso 需求进入 UI 设计阶段，或需要优化 PC 
 - 小程序：强调轻量路径、安全区、微信使用习惯
 - App：强调单手操作、主操作区、分段表单和返回路径
 
-### 3. 先交互闭环，再视觉强化
+### 3. 先设计基线，再交互闭环，再视觉强化
 
 输出顺序固定为：
 
 1. 页面目标
-2. 信息结构
-3. 核心交互路径
-4. 状态与异常处理
-5. 组件映射
-6. 视觉强化建议
+2. 风格方向与信息层级
+3. token 与组件语义
+4. 核心交互路径
+5. 状态、反馈与异常处理
+6. 动效与可访问性要求
 7. 端差异说明
 
 ## 默认输出
@@ -77,15 +115,25 @@ description: Use when Picasso 需求进入 UI 设计阶段，或需要优化 PC 
 至少覆盖：
 
 1. 页面定位与目标用户
-2. 三端范围矩阵
-3. 页面结构与信息层级
-4. 字段与组件映射
-5. 操作路径
-6. 状态、空态、加载态、错误态
-7. PC / 小程序 / App 差异说明
-8. 视觉与实现约束
-9. 开发注意事项
-10. 验收要点
+2. 风格方向与品牌 / 气质关键词
+3. 三端范围矩阵
+4. 页面结构与信息层级
+5. 字段与组件映射
+6. 操作路径
+7. 状态、空态、加载态、错误态
+8. 动效与反馈规则
+9. 可访问性与响应式要求
+10. PC / 小程序 / App 差异说明
+11. 视觉与实现约束
+12. 开发注意事项
+13. 验收要点
+
+## 最小上下文原则
+
+1. 不全量加载所有设计参考
+2. 只加载当前终端相关的 reference
+3. 如果只是 PC 页面优化，不读取 iOS / Android / 小程序专项规范
+4. 如果只是 UI 审查，不重复读取服务端规则
 
 ## 对开发线程的要求
 

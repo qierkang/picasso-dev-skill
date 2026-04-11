@@ -45,12 +45,20 @@ description: Use when the user wants to use the Picasso development skill packag
   - 服务端任务、接口、表结构、公共依赖、OpenSpec、后端推进
 - `skills/picasso-dev-ui/SKILL.md`
   - PC / 小程序 / App 的 UI 设计、页面优化、原型还原
+- `skills/picasso-dev-design-system/SKILL.md`
+  - 风格方向、token、组件层级、动效、可访问性基线
+- `skills/picasso-dev-ui-review/SKILL.md`
+  - UI 还原审查、交互审查、差异清单与回流建议
 - `skills/picasso-dev-config/SKILL.md`
   - 菜单、字典、SQL、环境配置和联调依赖
 - `skills/picasso-dev-methods/SKILL.md`
   - 规划、TDD、系统化排障、完成前验证、审查处理、多代理并行与隔离
 - `skills/picasso-dev-maintainer/SKILL.md`
   - 技能包自身维护、治理记录、Changelog、迁移说明
+
+若当前运行端可识别 `ui-ux-pro-max`，UI 阶段优先协同它；若不可识别，则自动回退到 `shared/references/design/`。
+
+即使当前运行端还能识别 `frontend-design` 等通用设计 skill，也不得把它们当成 `ui-ux-pro-max` 缺失时的默认兜底。
 
 ## 必须先读的仓库级文件
 

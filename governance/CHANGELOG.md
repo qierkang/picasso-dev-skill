@@ -76,3 +76,17 @@
 
 - `README.md` 已补充 `Harness Engineering 思路参考` 章节
 - 当前对外定位明确为“参考 Harness Engineering 的标准化思路做结构收敛”，不把仓库表述成独立框架实现
+
+## v0.3.9
+
+- 新增设计底座目录 `shared/references/design/`，补齐风格方向、token、Web、iOS、Android、小程序、动效、可访问性规则
+- 新增 `picasso-dev-design-system`、`picasso-dev-ui-review` 以及 `picasso-dev-ui-web / ios / android / miniapp` 专项 skill
+- `picasso-dev-ui` 升级为 UI 设计路由入口，支持先补设计底座再按平台补专项
+- `UI交互设计模板.md` 与 `UI验收报告模板.md` 已补风格、token、动效、可访问性相关结构
+- `README.md`、根级 `SKILL.md`、模板说明与 vendor 采用记录已同步更新
+
+## v0.3.10
+
+- 真实 Claude 隔离回归后，已将 UI fallback 规则加硬为“`ui-ux-pro-max` 缺失时只允许回退到仓库内置 `shared/references/design/`”
+- `AGENTS.md`、根级入口、主入口 skill、UI skill、设计底座索引、Claude/Codex 适配层已显式禁止把 `frontend-design` 之类通用设计 skill 当成默认兜底
+- 新增根级 `CLAUDE.md`，把 UI 路由硬约束直接前置给 Claude 运行端

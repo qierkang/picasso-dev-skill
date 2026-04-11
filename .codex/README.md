@@ -11,6 +11,16 @@
 3. Codex 侧只负责执行，不单独维护第二套 Picasso 规则
 4. Codex 是可选运行端，不是本 skill 包的必需依赖
 
+## UI 设计协同
+
+若 Codex 当前环境可识别 `ui-ux-pro-max`，进入 UI 设计与 UI 审查阶段时优先协同它。
+
+若不可识别，则自动回退到：
+
+- `shared/references/design/README.md`
+
+即使当前环境还能识别 `frontend-design` 等通用设计 skill，也不得把它们当成默认回退路径。
+
 ## 与其他运行端协作
 
 - Codex 可以单独执行这套 skill
