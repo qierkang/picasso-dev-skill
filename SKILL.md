@@ -55,6 +55,12 @@ description: Use when the user wants to use the Picasso development skill packag
   - 规划、TDD、系统化排障、完成前验证、审查处理、多代理并行与隔离
 - `skills/picasso-dev-maintainer/SKILL.md`
   - 技能包自身维护、治理记录、Changelog、迁移说明
+- `shared/references/readme/README.md`
+  - GitHub 开源 README 三件套索引、模板、风格参考与门禁入口
+- `shared/workflow/open-source-readme.md`
+  - README 生成、改写与校验的标准工作流
+- `shared/scripts/readme-gate.py`
+  - README 章节与占位符门禁脚本
 
 若当前运行端可识别 `ui-ux-pro-max`，UI 阶段优先协同它；若不可识别，则自动回退到 `shared/references/design/`。
 
@@ -70,6 +76,7 @@ description: Use when the user wants to use the Picasso development skill packag
 4. `profiles/picasso/execution-modes.md`
 5. `shared/references/requirements/README.md`
 6. `shared/references/task/README.md`
+7. `shared/references/readme/README.md`
 
 然后再进入对应子 skill。
 

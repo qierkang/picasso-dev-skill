@@ -89,8 +89,8 @@
 
 这种情况下：
 
-- 只配置 `OPENCLAW_SKILLS_DIR`
-- 同步后由 OpenClaw 识别 skill
+- 直接让 OpenClaw 读取当前仓库路径
+- 不再复制到 `~/.openclaw/skills`
 - 主流程仍然是 `picasso-dev`
 
 ### 方式 B：只有 Claude Code
@@ -99,7 +99,8 @@
 
 这种情况下：
 
-- 只配置 `CLAUDE_SKILLS_DIR`
+- 直接让 Claude Code 读取当前仓库路径
+- 不再复制到 `~/.claude/skills`
 - Claude Code 按 `picasso-dev` 推流程
 
 ### 方式 C：只有 Codex
@@ -108,7 +109,8 @@
 
 这种情况下：
 
-- 只配置 `CODEX_SKILLS_DIR`
+- 直接让 Codex 读取当前仓库路径
+- 不再复制到 `~/.codex/skills`
 - Codex 单独按同一套规则推进
 
 ### 方式 D：Claude Code + Codex 协作
@@ -180,7 +182,6 @@ cp .env.example .env
 vim .env
 bash install/setup.sh
 bash install/doctor.sh --capability docs
-bash install/sync.sh
 ```
 
 如果你要进入真实开发，至少再跑：

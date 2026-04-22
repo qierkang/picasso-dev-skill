@@ -66,7 +66,6 @@ tools:
   primary_cli: ${CLAUDE_BIN}
   coding_cli: ${CODEX_BIN}
   enhanced_mode: ${CODEX_PLUGIN_CC_ENABLED}
-skill_targets:
-  openclaw: ${OPENCLAW_SKILLS_DIR}
-  claude: ${CLAUDE_SKILLS_DIR}
-  codex: ${CODEX_SKILLS_DIR}
+skill_source:
+  root: ${PICASSO_SKILL_ROOT_DIR}
+  distribution: single-source

@@ -573,20 +573,21 @@ if [ "$CAPABILITY" != "docs" ]; then
   fi
 fi
 
+if [ -d "$ROOT_DIR/skills" ] && [ -f "$ROOT_DIR/SKILL.md" ]; then
+  pass "canonical skill 源目录完整: $ROOT_DIR"
+else
+  fail "当前仓库缺少根级 SKILL.md 或 skills/，不是有效的 picasso-dev-skill 源目录"
+fi
+
 for pair in \
   "OpenClaw:${OPENCLAW_SKILLS_DIR:-}" \
   "Claude:${CLAUDE_SKILLS_DIR:-}" \
-  "Codex:${CODEX_SKILLS_DIR:-}"; do
+  "Codex:${CODEX_SKILLS_DIR:-}" \
+  "OpenCode:${OPENCODE_SKILLS_DIR:-}"; do
   label="${pair%%:*}"
   path="${pair#*:}"
   if [ -n "${path:-}" ]; then
-    if [ -d "$path" ]; then
-      pass "$label 技能目录存在"
-    else
-      warn "$label 技能目录不存在，sync.sh 执行时会尝试创建"
-    fi
-  else
-    warn "$label 技能目录未配置"
+    warn "$label 技能目录变量已废弃；当前只保留 canonical 源目录，不再向外部分发副本"
   fi
 done
 

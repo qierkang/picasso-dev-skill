@@ -90,3 +90,22 @@
 - 真实 Claude 隔离回归后，已将 UI fallback 规则加硬为“`ui-ux-pro-max` 缺失时只允许回退到仓库内置 `shared/references/design/`”
 - `AGENTS.md`、根级入口、主入口 skill、UI skill、设计底座索引、Claude/Codex 适配层已显式禁止把 `frontend-design` 之类通用设计 skill 当成默认兜底
 - 新增根级 `CLAUDE.md`，把 UI 路由硬约束直接前置给 Claude 运行端
+
+## v0.3.11
+
+- `sync.sh` 已收口为“只同步一个 `picasso-dev-skill` 根包”，不再把 companion skills 拆成宿主机顶层独立目录
+- `sync.sh` 会在同步前自动归档历史独立目录 `picasso-dev* / zzpms-dev-ui` 到当前用户回收站
+- `README.md` 已同步改成“单技能包目录”口径，避免新环境继续产生重复 skill 目录
+
+## v0.3.12
+
+- 进一步收紧为“只保留当前仓库这一份 canonical skill 源目录”，不再向 `~/.claude/skills`、`~/.codex/skills`、`~/.openclaw/skills` 生成任何副本
+- `sync.sh` 现已改为“外部副本清理脚本”，仅负责回收历史副本，不再分发
+- `.env.example`、`doctor.sh`、`profile.yaml`、`README.md`、`START-HERE.md`、`配置入口说明.md`、`execution-modes.md`、`repo-map.md` 已统一改成单一源目录口径
+
+## v0.3.13
+
+- 新增 `shared/references/readme/`，将 GitHub 开源 README 的主提示词、风格参考和结构模板内化到 skill 包内
+- 新增 `shared/workflow/open-source-readme.md`，把 README 生成、改写与校验串成标准工作流
+- 新增 `shared/scripts/readme-gate.py`，用于校验 README 章节完整性与占位符残留
+- `README.md`、`skills/picasso-dev/SKILL.md`、`skills/picasso-dev-maintainer/SKILL.md` 已同步接入新的 README 路由

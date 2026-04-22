@@ -14,6 +14,7 @@ description: Use when modifying picasso-dev-skill 自身的 skill、模板、脚
 - 新增或修改 skill
 - 调整模板、脚本、README、profile
 - 记录变更原因、影响范围和迁移说明
+- 维护 `shared/references/readme/`、`shared/workflow/open-source-readme.md` 和 `shared/scripts/readme-gate.py`
 
 ## 必须先读取
 

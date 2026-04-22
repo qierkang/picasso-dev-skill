@@ -18,7 +18,7 @@
 | 服务端任务根目录 | `PICASSO_SERVER_TASK_DIR` | 服务端任务推进、归档与协同承载 |
 | 技能包运行目录 | `PICASSO_WORKSPACE_DIR` | 当前仓库内的需求运行区 |
 | 技能包维护目录 | `governance/` | 当前仓库内的维护记录区 |
-| 技能同步目录 | `OPENCLAW_SKILLS_DIR` / `CLAUDE_SKILLS_DIR` / `CODEX_SKILLS_DIR` | 只配置你实际使用的平台 |
+| 技能源目录 | `PICASSO_SKILL_ROOT_DIR` | 当前唯一 canonical skill 根目录 |
 
 ## 使用原则
 
