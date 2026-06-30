@@ -23,6 +23,7 @@
 - `updates/chg-0015-collapse-standalone-skill-sync-into-single-package.md`
 - `updates/chg-0016-switch-to-single-canonical-skill-source.md`
 - `updates/chg-0017-add-open-source-readme-workflow.md`
+- `updates/chg-0018-platform-project-open-source-upgrade.md`
 - `decisions/dec-0001-local-only-preflight-and-autopilot.md`
 - `decisions/dec-0002-executable-runtime-orchestration.md`
 - `decisions/dec-0003-self-contained-method-layer.md`

@@ -133,8 +133,8 @@
     "mobile_app": false
   },
   "source_assets": [
-    "/Users/qierkang/Downloads/生产+维修保养/保养方案.html",
-    "/Users/qierkang/Downloads/生产+维修保养/保养方案-详情.html"
+    "prototype-inputs/maintenance-plan-list.html",
+    "prototype-inputs/maintenance-plan-detail.html"
   ],
   "key_dependencies": [
     "登录上下文公司信息",

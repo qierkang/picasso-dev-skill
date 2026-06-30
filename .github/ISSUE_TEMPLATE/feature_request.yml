@@ -1,0 +1,19 @@
+name: Feature request
+description: Propose a workflow, platform, gate, or automation improvement.
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case
+      description: Explain the request type, target platform, and affected stage.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe expected artifacts and gate behavior.
+    validations:
+      required: true

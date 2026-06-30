@@ -1,0 +1,29 @@
+# 更新记录 chg-0016
+
+- 提交人：中造壹号（claude+codex）
+- 日期：2026-04-15
+- 影响范围：
+  - `install/sync.sh`
+  - `install/doctor.sh`
+  - `.env.example`
+  - `README.md`
+  - `START-HERE.md`
+  - `profiles/picasso/profile.yaml`
+  - `profiles/picasso/配置入口说明.md`
+  - `profiles/picasso/execution-modes.md`
+  - `profiles/picasso/repo-map.md`
+  - `governance/CHANGELOG.md`
+  - `governance/INDEX.md`
+- 变更原因：
+  - 用户明确要求 `picasso-dev-skill` 后续只保留仓库源目录这一份，不再在 `~/.claude/skills`、`~/.codex/skills`、`~/.openclaw/skills` 生成任何安装副本
+  - 使用口径也统一为：所有模型只寻找当前 canonical skill 源目录
+- 本次修改：
+  - `sync.sh` 改为外部副本清理脚本，不再分发
+  - `.env.example` 新增 `PICASSO_SKILL_ROOT_DIR`
+  - `doctor.sh` 改为检查 canonical 源目录，并将旧 `*_SKILLS_DIR` 变量标记为废弃
+  - 文档与 profile 统一切换到单一源目录描述
+- 对使用者的影响：
+  - 后续 `picasso-dev-skill` 不再向平台目录生成副本
+  - 如需让不同模型使用，统一让它们读取当前仓库路径
+- 后续建议：
+  - 其他技能包也按相同思路收口，减少副本同步和版本漂移风险

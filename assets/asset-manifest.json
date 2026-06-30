@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "project": "picasso-dev-skill",
+  "required": [
+    {
+      "image_type": "architecture",
+      "locale": "zh-CN",
+      "path": "assets/platform/architecture/zh-CN/picasso-dev-skill-architecture.png",
+      "prompt_file": null,
+      "sha256": "746ffc95aaadc79b092fd370a7cdcc9bd49bd57c43bfd30aeb4c2f608d89cdfd",
+      "generated_at": "2026-06-29T19:08:44+00:00",
+      "generated_by": "image_gen"
+    },
+    {
+      "image_type": "architecture",
+      "locale": "en",
+      "path": "assets/platform/architecture/en/picasso-dev-skill-architecture.png",
+      "prompt_file": null,
+      "sha256": "42af8f827f9d80288d3fcf9d54ce1d7c3d05955cfd8b350113282cc2ce432d54",
+      "generated_at": "2026-06-29T19:11:42+00:00",
+      "generated_by": "image_gen"
+    }
+  ],
+  "extra": [
+    {
+      "image_type": "extra",
+      "path": "assets/social-preview.png",
+      "prompt_file": null,
+      "sha256": "cc17f8e4611d7a7076a2cc397315ab7a1abb12674b015ec5c842982a561b9cdc",
+      "generated_at": "2026-06-29T19:14:43+00:00",
+      "generated_by": "image_gen"
+    }
+  ],
+  "generated_at": "2026-06-29T19:08:44+00:00"
+}

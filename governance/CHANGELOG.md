@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Unreleased
+
+- 按 `platform-project-skill` existing route 补齐中英文开源 README、双语架构图、social preview、资产 manifest、MIT、贡献指南、Issue 模板和 CI。
+- 新增双语 README gate 与老项目 AI 能力升级报告。
+
 ## v0.1.0
 
 - 初始化 `picasso-dev-skill` 仓库结构

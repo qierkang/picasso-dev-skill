@@ -10,8 +10,8 @@
 
 ## 原始输入
 
-- `/Users/qierkang/Downloads/生产+维修保养/保养方案.html`
-- `/Users/qierkang/Downloads/生产+维修保养/保养方案-详情.html`
+- `prototype-inputs/maintenance-plan-list.html`
+- `prototype-inputs/maintenance-plan-detail.html`
 
 > 以上路径只是这个示例在当前机器上的原型来源，不属于新环境必须修改的配置项。真实环境适配请只修改仓库根目录 `.env`。
 

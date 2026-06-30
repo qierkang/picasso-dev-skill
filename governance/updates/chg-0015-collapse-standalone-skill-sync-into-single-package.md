@@ -1,0 +1,21 @@
+# 更新记录 chg-0015
+
+- 提交人：中造壹号（claude+codex）
+- 日期：2026-04-15
+- 影响范围：
+  - `install/sync.sh`
+  - `README.md`
+  - `governance/CHANGELOG.md`
+  - `governance/INDEX.md`
+- 变更原因：
+  - `picasso-dev-skill` 已具备根级入口和包内 `skills/` 路由，不再需要在宿主机目录额外拆出 `picasso-dev`、`picasso-dev-ui`、`picasso-dev-task`、`picasso-dev-config`、`picasso-dev-maintainer`
+  - 历史双轨同步会在 `~/.codex/skills`、`~/.claude/skills`、`~/.openclaw/skills` 产生重复目录，增加维护成本和使用歧义
+- 本次修改：
+  - `sync.sh` 收口为只同步根包
+  - 同步前自动归档历史独立 skill 目录到当前用户回收站
+  - README 改成“一个技能包一个目录”的分发口径
+- 对使用者的影响：
+  - 后续宿主机只保留 `picasso-dev-skill`
+  - 仍可通过根级 `SKILL.md` 进入，再在包内路由到 `skills/picasso-dev*`
+- 后续建议：
+  - 其他技能包同步脚本也按同一口径收口，避免长期残留顶层 companion skill 目录

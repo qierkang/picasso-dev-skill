@@ -1,0 +1,26 @@
+name: Bug report
+description: Report a reproducible workflow or validation failure.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Describe the request type, stage, platform, and observed behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Provide minimal sanitized steps and gate output.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Runtime, operating system, and relevant tool versions.
+    validations:
+      required: true

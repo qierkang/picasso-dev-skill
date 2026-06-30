@@ -1,5 +1,12 @@
 .DS_Store
 .env
+.env.*
+!.env.example
+.idea/
+.vscode/
+node_modules/
+dist/
+/graphify-out
 
 workspace/requests/**
 workspace/archives/**
