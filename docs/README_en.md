@@ -331,7 +331,13 @@ The method layer draws from public practices in TDD, systematic debugging, verif
 The verified chart will be added with `platform-project-skill/scripts/add-star-history.sh` after the first public push.
 
 <!-- star-history:start -->
-Star History will be added after the first public push.
+<a href="https://www.star-history.com/?type=date&repos=qierkang%2Fpicasso-dev-skill">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=qierkang/picasso-dev-skill&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=qierkang/picasso-dev-skill&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=qierkang/picasso-dev-skill&type=date&legend=top-left" />
+ </picture>
+</a>
 <!-- star-history:end -->
 
 ## License
